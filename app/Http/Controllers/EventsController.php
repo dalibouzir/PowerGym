@@ -38,9 +38,11 @@ class EventsController extends Controller
                 $userBMI = $recommendationsData['bmi'];
             }
         } catch (RequestException $e) {
+            
             // Handle potential errors like network issues or incorrect URLs
             $userBMI = 'Not available';
             $recommendations = 'Please try fill the recommendation forum first.';
+            
         }
     
         // Pass the fetched data to your view

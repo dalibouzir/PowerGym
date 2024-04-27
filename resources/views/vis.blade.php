@@ -7,10 +7,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 body {
-    background-image: url("https://files.123freevectors.com/wp-content/original/128899-glowing-red-and-blue-wave-background.jpg");
+    
     color: #fff; /* Keep text color for better contrast */
     font-family: 'Roboto', sans-serif; /* Ensures typography consistency */
-
+    background-image: url("https://files.123freevectors.com/wp-content/original/128899-glowing-red-and-blue-wave-background.jpg");
     /* Background properties for full coverage */
     background-size: cover; /* Scale the background to be as large as possible */
     background-position: center; /* Center the background image */
