@@ -283,8 +283,8 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="personal-trainer-box">
         <strong>BECOME A</strong>
         <h4>Personal Trainer</h4>
-        <p>Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.</p>
-        <button>Sign Up Now</button>
+        <p>Become a Personal Trainer and turn your passion for fitness into a fulfilling career. Inspire and empower individuals to achieve their health goals. Transform lives through personalized training and expert guidance.</p>
+        <button><a href="/registration">SIGN UP</a></button>
       </div>
     </div>
   </section>

@@ -291,20 +291,7 @@ input[type="submit"]:hover {
         <div>{{ $message }}</div>
     @enderror
 
-    <label for="fitness-challenges">Physical Fitness Challenges:</label>
-    <select id="fitness-challenges" name="fitness_challenges">
-        <option value="">Select your challenge</option>
-        <option value="endurance">Endurance</option>
-        <option value="strength">Strength</option>
-        <option value="flexibility">Flexibility</option>
-        <option value="weight-loss">Weight Loss</option>
-        <option value="muscle-gain">Muscle Gain</option>
-        <option value="motivation">Motivation</option>
-        <option value="other">Other</option>
-    </select>
-    @error('fitness_challenges')
-        <div>{{ $message }}</div>
-    @enderror
+    
 </fieldset>
 
 <!-- Health Information -->

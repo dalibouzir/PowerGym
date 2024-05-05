@@ -416,18 +416,31 @@ header nav ul li a {
   text-align: left;
 }
 
-#schedule-services .flex > div {
-  width: 32%;
-  box-sizing: border-box;
+#schedule-services .flex {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  justify-content: space-between; /* Manages spacing between items */
 }
 
-#schedule-services .flex strong {
-  display: block;
-  color: #212122;
-  font-size: 0.85rem;
-  opacity: 0.6;
-  letter-spacing: 4px;
+#schedule-services .flex > div {
+  flex: 1 0 32%; /* Adjust 'flex-basis' as needed */
+  box-sizing: border-box;
+  padding: 0 10px; /* Add padding if needed, but make sure to adjust width calculations */
+  margin-bottom: 20px; /* Optional, adds space between rows when wrapped */
 }
+@media (max-width: 768px) {
+  #schedule-services .flex > div {
+    flex: 0 0 50%; /* Each item takes half of the row */
+  }
+}
+
+@media (max-width: 480px) {
+  #schedule-services .flex > div {
+    flex: 0 0 100%; /* Each item takes full width */
+  }
+}
+
+
 
 .upcoming-classes-box {
   border: 2px solid #E5E7F3;
@@ -823,7 +836,8 @@ footer small a {
     }
 
     #schedule-services .flex > div {
-      width: 100% !important;
+      width: 100%; /* Each div takes full width on smaller screens */
+     flex: 0 0 100%;
       margin-top: 3rem;
     }
 

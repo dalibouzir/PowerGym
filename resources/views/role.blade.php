@@ -93,7 +93,6 @@
         align-items: center;
     }
 </style>
-
 <div class="container">
     <h1>Manage User Roles</h1>
     <form action="{{ route('admin.users.index') }}" method="GET">
@@ -108,15 +107,16 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Actions</th>
+                <th></th> <!-- New column for remove action -->
             </tr>
         </thead>
         <tbody>
-         @foreach ($users as $user)
-                @if (!$user->isAdmin1()) <!-- Check if the user is not an admin directly -->
+            @foreach ($users as $user)
+                @if (!$user->isAdmin1())
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td colspan="2">
+                        <td>
                             <form action="{{ route('admin.users.updateRole', $user) }}" method="POST" class="role-update-form">
                                 @csrf
                                 <select name="role">
@@ -129,11 +129,53 @@
                                 <button type="submit">Update</button>
                             </form>
                         </td>
+                        <td>
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+
+                        </td>
                     </tr>
                 @endif
             @endforeach
         </tbody>
     </table>
-    {{ $users->links() }} <!-- Pagination -->
+    {{ $users->links() }}
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('form button[type="submit"]');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            const form = button.closest('form'); // Get the form
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#444',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form only if confirmed
+                }
+            });
+        });
+    });
+});
+
+
+
+
+</script>
 @endsection

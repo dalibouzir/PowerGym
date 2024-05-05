@@ -37,7 +37,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Soft white shadow for depth */
-    width: 95%; /* Increased width for a wider layout */
+    width:77%; /* Increased width for a wider layout */
     box-sizing: border-box;
 }
 .left-sections li, .body-sections li, .recommendation-section li {
@@ -102,7 +102,8 @@ color: #DC143C;
 }
 
 .body-part ul li {
-    padding: 5px 0; /* Adds vertical padding to list items */
+    padding: 5px 0; 
+    cursor:pointer;
 }
 
 @media (max-width: 768px) {
@@ -123,11 +124,12 @@ color: #DC143C;
 
 .recommendation-action:hover {
 /* A darker shade of red on hover */
-    transform: scale(1.05); /* Slightly enlarges the div on hover */
+color:wheat; /* Slightly enlarges the div on hover */
 }
 
 .recommendation-action p {
     margin: 0; /* Removes default paragraph margin */
+    color:wheat;
     font-weight: bold; /* Makes the text bold */
 }
 
@@ -162,13 +164,13 @@ color: #DC143C;
 }
 
 .banner h1 {
-    color: #FFD700; /* Darker yellow for a richer appearance */
+    color: rgba(255, 0, 0, 0.7); /* Darker yellow for a richer appearance */
     margin-bottom: 15px;
 }
 
 .banner p {
     margin-bottom: 10px;
-    color: #FF4500; /* A darker red for better harmony with the theme */
+    color: red; /* A darker red for better harmony with the theme */
     font-size: 16px;
 }
 
@@ -185,7 +187,7 @@ color: #DC143C;
 .banner p {
     display: inline-block;
     background-color: #202020; /* Near black for a deeper contrast */
-    color: #FFA500; /* A darker shade of yellow for text */
+    color: white; /* A darker shade of yellow for text */
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -199,7 +201,7 @@ color: #DC143C;
 
 .banner p:hover, .banner p:hover {
     background-color: #202020; /* Slightly brighter red for hover effect */
-    color: #FF4500; /* Darker yellow for text, providing strong contrast on hover */
+    color: cyan; /* Darker yellow for text, providing strong contrast on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Even more pronounced shadow for a "pop" effect */
     transform: translateY(-2px); /* Slight upward movement for interactivity */
 }
@@ -207,8 +209,8 @@ color: #DC143C;
 
 .processing p, .recommendation-action p {
     text-align: center;
-    cursor: pointer;
-    color: #E6E6FA; /* Soft gray for text, providing contrast without stark white */
+
+    color:wheat; /* Soft gray for text, providing contrast without stark white */
 }
 
 #load {
@@ -11709,44 +11711,53 @@ body.has-skin .owl-item {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    color: white;
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    line-height: 40px;
+    line-height: 50px; /* Increased line height for better alignment */
     z-index: 10;
     cursor: pointer;
-    font-size: 12px; 
+    font-size: 16px; /* Larger font size for the text */
+    color: white; /* Default text color */
+    border: none; /* Removes border if any */
+    background: none; /* Removes background if any */
 }
 
 .container-arrow:hover,
 .container-arrow:focus {
     text-decoration: none;
-    color: red;
+    color: white; /* Keeps text color consistent on hover/focus */
 }
 
-/* Arrow Bouncing */
+/* Arrow Styling with Gradient */
 .container-arrow span {
     display: inline-block;
-    font-size: 80px;
-    animation: .7s down infinite alternate;
-    -webkit-animation: .7s down infinite alternate;
+    font-size: 60px; /* Larger arrow size */
+    color: transparent; /* Makes the text color transparent */
+    background: linear-gradient(to right, blue, red); /* Gradient color from red to blue */
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: bounce .7s infinite alternate;
+    -webkit-animation: bounce .7s infinite alternate;
+}
+.container-arrow span.flip-right {
+    transform: rotate(90deg); /* Rotates the arrow 90 degrees clockwise */
 }
 
-/*** Animation Arrow down ***/
-@keyframes down {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(20px); }
+/* Keyframes for Bouncing Animation */
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
 }
 
-@-webkit-keyframes down {
-    0% { -webkit-transform: translateY(0px); }
-    100% { -webkit-transform: translateY(20px); }
+/* Adding a slight shadow for enhanced visibility */
+.container-arrow span {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Increased shadow size for better visibility */
 }
-	
+
 
 .video-instruction-section {
-    background-color: #f8f9fa; /* Light background for better readability */
+    background-color: rgba(0, 0, 0, 0); /* Light background for better readability */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -11755,14 +11766,17 @@ body.has-skin .owl-item {
 }
 
 .video-instruction-section h2 {
-    color: #333; /* Dark color for headline */
-    margin-bottom: 10px;
+    color: rgba(255, 45, 0, 0.7); /* Dynamic orange-red color for headlines */
+    text-transform: uppercase; /* Adding an uppercase to make the headline more impactful */
+    font-weight: bold; /* Stronger font weight for emphasis */
+    margin-bottom: 10px; /* Keeping space between headline and content */
 }
 
 .video-instruction-section p {
-    color: #666; /* Lighter text color for instructions */
-    font-size: 16px; /* Adequate font size for readability */
-    line-height: 1.6; /* Improved line height for better readability */
+    color: #333; /* Darker grey for better readability and seriousness */
+    font-size: 16px; /* Maintaining readability with a moderate font size */
+    line-height: 1.5; /* Increasing line height for better legibility */
+    font-weight: normal; /* Normal font weight for detailed instructions */
 }
 
     </style>
@@ -13783,28 +13797,29 @@ function navigateToWorkout(bodyPart) {
   }
 }
 document.addEventListener('DOMContentLoaded', function() {
-    const scrollArrow = document.getElementById('scrollArrow');
+    const scrollArrow = document.querySelector('.container-arrow'); // Get the arrow container
 
-    // Toggle scroll to top or bottom
-    window.toggleScroll = function() {
+    // Function to toggle scroll and arrow direction
+    scrollArrow.addEventListener('click', function() {
         if (window.pageYOffset > 0) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            scrollArrow.innerHTML = '&#8595;'; // Change to down arrow after scrolling up
+            scrollArrow.querySelector('i').className = 'fa fa-angle-down'; // Set to down arrow after scrolling up
         } else {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            scrollArrow.innerHTML = '&#8593;'; // Change to up arrow
+            scrollArrow.querySelector('i').className = 'fa fa-angle-up'; // Set to up arrow to scroll down
         }
-    };
+    });
 
-    // Change arrow direction based on scroll position
+    // Event listener for scroll to change the arrow direction based on position
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 0) {
-            scrollArrow.innerHTML = '&#8593;'; // Show up arrow when not at the top
+            scrollArrow.querySelector('i').className = 'fa fa-angle-up'; // Up arrow when not at the top
         } else {
-            scrollArrow.innerHTML = '&#8595;'; // Show down arrow when at the top
+            scrollArrow.querySelector('i').className = 'fa fa-angle-down'; // Down arrow when at the top
         }
     });
 });
+
 
 document.getElementById('getRecommendation').addEventListener('click', function() {
     this.style.display = 'none';
@@ -13854,4 +13869,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </html>
 
-@endsection
+@endsecq

@@ -197,3 +197,4 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
 });
+Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
