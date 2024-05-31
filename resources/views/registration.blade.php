@@ -13,7 +13,7 @@
 <style>
 body {
     background-color: #1b1b32;
-    background-image: url('https://r2.erweima.ai/imgcompressed/compressed_b618ba1c41883ba7c191ea610eb5559d.webp');
+    background-image: url("https://i.pinimg.com/originals/fe/e5/46/fee54690963240994bf2b3c6342bc89a.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

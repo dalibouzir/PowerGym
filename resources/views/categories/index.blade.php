@@ -5,20 +5,20 @@
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
 <style>
-body {
+body, html {
     width: 100%;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #1b1b32;
     color: rgb(192, 192, 192);
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     background-image: url("https://www.pixel4k.com/wp-content/uploads/2020/08/red-and-blue-broken-abstract_1596929088.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;/* Do not repeat the background */
-        background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,9 +29,8 @@ body {
     background: rgba(27, 27, 50, 0.85);
     padding: 20px 25px;
     margin: 30px 0;
-    border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    overflow: hidden; /* Ensures box shadow is visible */
+    border-radius: 10px; /* Adjusted for rounder corners */
+    box-shadow: 0px 0px 8px #FF4136; /* Red glow effect */
 }
 
 .table-title {
@@ -40,7 +39,7 @@ body {
     color: #fff;
     padding: 16px 30px;
     margin: -20px -25px 10px;
-    border-radius: 3px 3px 0 0;
+    border-radius: 10px 10px 0 0;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
@@ -54,7 +53,7 @@ body {
 }
 
 .btn, input[type="submit"] {
-    cursor: pointer; /* Ensures the cursor indicates clickable items */
+    cursor: pointer;
     background-color: rgba(0, 0, 0, 0.5);
     color: rgba(255, 0, 0, 0.7);
     font-size: 13px;
@@ -68,9 +67,8 @@ body {
     color: #fff;
 }
 
-/* Additional button styles for primary and danger states */
 .btn-primary, .btn-danger {
-    opacity: 1; /* Ensure buttons are fully opaque by default */
+    opacity: 1;
 }
 
 .btn-primary {
@@ -115,7 +113,6 @@ table.table td a, table.table td a:hover {
     border-radius: 3px;
 }
 
-/* Customizing form inputs to match the theme */
 input, textarea, select {
     background-color: #0a0a23;
     border: 1px solid #cc0000;
@@ -137,7 +134,7 @@ input, textarea, select {
                 </div>
                 @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
                 <div class="col-sm-6">
-                    <a href="{{ route('categories.create') }}" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus icon"></i><span>Add New Category</span></a>
+                    <a href="{{ route('categories.create') }}" class="btn btn-success"><i class="fas fa-plus icon"></i><span>Add New Category</span></a>
                 </div>
                 @endif
             </div>
@@ -154,8 +151,10 @@ input, textarea, select {
                     <th>Name</th>
                     <th>Comment</th>
                     <th>Created At</th>
-                    <th>Created By</th> <!-- Added Column Header for User Name -->
+                    <th>Created By</th>
+                    @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
                     <th>Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -170,7 +169,7 @@ input, textarea, select {
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->comment }}</td>
                     <td>{{ $category->created_at->format('Y-m-d') }}</td>
-                    <td>{{ $category->user->name ?? 'N/A' }}</td> <!-- Display the User's Name -->
+                    <td>{{ $category->user->name ?? 'N/A' }}</td>
                     <td>
                     @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
                         <a href="{{ route('categories.edit', $category) }}" class="edit-icon"><i class="fas fa-edit"></i></a>
@@ -178,7 +177,7 @@ input, textarea, select {
                         <form action="{{ route('categories.destroy', $category) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"onclick="confirmDeletion(event)"  class="delete-icon" style="background: none; border: none; color: inherit;"><i class='fas fa-trash'></i></button>
+                            <button type="submit"onclick="confirmDeletion(event)" class="delete-icon" style="background: none; border: none; color: inherit;"><i class='fas fa-trash'></i></button>
                         </form>
                         @endif
                     </td>
@@ -192,15 +191,15 @@ input, textarea, select {
 <script>
     function confirmDeletion(event) {
     event.preventDefault();
-    const form = event.target.form; // Access the form
+    const form = event.target.form;
 
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33', // Dark red for the confirm button
-        cancelButtonColor: '#444', // Dark grey (or blackish) for the cancel button
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#444',
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -208,7 +207,6 @@ input, textarea, select {
         }
     });
 }
-
 </script>
 
 @endsection

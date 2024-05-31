@@ -14,5 +14,7 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'stock', // Add the 'stock' attribute
     ];
+    
 }

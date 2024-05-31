@@ -3,7 +3,7 @@
 @section('content')
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
-	<style>
+<style>
     body {
         width: 100%;
         min-height: 100vh;
@@ -16,7 +16,7 @@
         background-image: url("https://www.pixel4k.com/wp-content/uploads/2020/08/red-and-blue-broken-abstract_1596929088.jpg");
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;/* Do not repeat the background */
+        background-repeat: no-repeat;
         background-attachment: fixed;
         display: flex;
         flex-direction: column;
@@ -24,281 +24,258 @@
         justify-content: flex-start;
     }
 
-    .table-wrapper {
-        background: rgba(27, 27, 50, 0.85);
-        padding: 20px 25px;
-        margin: 30px 0;
-        border-radius: 3px;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 10px;
     }
 
     .table-title {
-        padding-bottom: 15px;
-        background: #cc0000;
+        padding: 20px;
+        background: linear-gradient(45deg, #8B0000, #00008B); /* Dark red and dark blue gradient */
         color: #fff;
-        padding: 16px 30px;
-        margin: -20px -25px 10px;
-        border-radius: 3px 3px 0 0;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
     }
 
     .table-title h2 {
-        margin: 5px 0 0;
-        font-size: 24px;
-    }
-
-    .table-title .btn-group {
-        float: right;
+        margin: 0;
+        font-size: 28px;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .table-title .btn {
-        background-color: rgba(0, 0, 0, 0.5);
-        color: rgba(255, 0, 0, 0.7);
-        font-size: 13px;
-        border: 2px solid rgba(255, 0, 0, 0.7);
-        border-radius: 2px;
-        margin-left: 10px;
+        background-color: #8B0000; /* Dark red button */
+        color: #fff;
+        font-size: 18px;
+        border: 2px solid #8B0000; /* Dark red border */
+        border-radius: 50px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     }
 
     .table-title .btn:hover {
+        background-color: #00008B; /* Dark blue on hover */
+        border-color: #00008B; /* Dark blue border on hover */
+    }
+
+    .intro-text {
+        margin: 20px 0;
+        font-size: 18px;
+        line-height: 1.6;
+        text-align: justify;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .card {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        width: calc(25% - 20px); /* Four cards per row */
+        margin: 10px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 400px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .card-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #f8b400; 
+        font-family: 'Georgia', serif;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-description {
+        font-size: 16px;
+        margin-bottom: 10px;
+        flex-grow: 1;
+        color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+        font-family: 'Verdana', sans-serif;
+        text-align: justify;
+        line-height: 1.5;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-dates {
+        font-size: 14px;
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.6); /* Lighter semi-transparent white */
+        font-family: 'Courier New', monospace;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .card-date-style {
+        color: rgba(255, 255, 255, 0.6); /* Lighter semi-transparent white */
+        display: inline-block;
+    }
+
+    .card-actions {
+        align-self: flex-end;
+    }
+
+    .card-actions .btn {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: rgba(255, 0, 0, 0.7);
+        font-size: 14px;
+        border: 2px solid rgba(255, 0, 0, 0.7);
+        border-radius: 5px;
+        margin-left: 10px;
+        padding: 5px 10px;
+        transition: all 0.3s ease;
+    }
+
+    .card-actions .btn:hover {
         background-color: rgba(255, 0, 0, 0.7);
         color: #fff;
     }
 
-    table.table tr th, table.table tr td {
-        border-color: #e9e9e9;
-        padding: 12px 15px;
-        color: rgb(192, 192, 192);
-    }
-
-    table.table tr th:first-child, table.table tr th:last-child {
-        width: auto;
-    }
-
-    table.table-striped tbody tr:nth-of-type(odd) {
-        background-color: #2c2c4e;
-    }
-
-    table.table-striped.table-hover tbody tr:hover {
-        background: #1b1b32;
-    }
-
-    table.table td a, table.table td a:hover {
-        color: #FFC107;
-    }
-
-    table.table td a.edit {
-        color: #FFC107;
-    }
-
-    table.table td a.delete {
-        color: #F44336;
-    }
-
-    .pagination li a, .pagination li a:hover, .pagination li.active a, .pagination li.active a.page-link {
-        background: #03A9F4;
+    .alert-danger {
+        background: rgba(255, 0, 0, 0.7);
         color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        width: 100%;
     }
 
-    .custom-checkbox input[type="checkbox"]:checked + label:before {
-        border-color: #03A9F4;
-        background: #03A9F4;
+    .alert-danger ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .banner {
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: #fff;
+        font-size: 24px;
     }
 
-    .modal .modal-content {
-        background: rgba(27, 27, 50, 0.85);
-        color: rgb(192, 192, 192);
+
+    .banner-blue {
+        background-color: #00008B; /* Dark blue */
     }
 
-    input, textarea, select {
-        background-color: #0a0a23;
-        border: 1px solid #cc0000;
-        color: #ffffff;
-    }
-
-    .btn, input[type="submit"] {
-    cursor: pointer; /* Add this line to both selectors */
-}
-
-/* Existing styles for .btn */
-.btn {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: rgba(255, 0, 0, 0.7);
-    font-size: 13px;
-    border: 2px solid rgba(255, 0, 0, 0.7);
-    border-radius: 2px;
-    margin-left: 10px;
-}
-
-.btn:hover {
-    background-color: rgba(255, 0, 0, 0.7);
-    color: #fff;
-}
-
-/* Existing styles for input[type="submit"] */
-input[type="submit"] {
-    background-color: #cc0000;
-    color: white;
-}
-
-input[type="submit"]:hover {
-    background-color: #ff4d4d;
-}
-/* Button Hover Effects */
-.btn-primary:hover, .btn-danger:hover {
-    opacity: 0.8;
-}
-
-/* Enhanced Button Styles */
-/* Button Styles for Editing (More intuitive editing color) */
-.btn-primary {
-    background-color: #17a2b8; /* Bootstrap info blue or a teal for editing */
-    border-color: #17a2b8;
-}
-
-.btn-primary:hover {
-    background-color: #138496; /* A slightly darker shade for hover */
-    border-color: #117a8b;
-}
-
-
-/* Custom styles for .btn-danger.btn-red */
-.btn-danger.btn-red {
-    background-color: #ffcccc; /* Light red background */
-    color: #ffffff; /* White text */
-    border: none; /* Removes any border */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background and color */
-}
-
-.btn-danger.btn-red:hover {
-    background-color: #cc0000; /* Darker red on hover */
-    color: #dcdcdc; /* Light grey text */
-}
-
-
-/* Additional Styling for Consistency and Aesthetics */
-.table-title {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-}
-
-.table-wrapper {
-    overflow: hidden; /* Ensures box shadow is visible */
-}
-
-/* Icon Enhancements */
-i.icon {
-    margin-right: 5px; /* Space between icon and text */
-}
-
-/* Custom Checkbox Enhancements */
-.custom-checkbox label:before {
-    border-radius: 3px; /* Match the button border-radius */
-}
 
 </style>
-<div class="container">
-    <div class="table-wrapper">
-        <!-- Add this section to display error messages -->
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="table-title">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h2>Manage <b>Events</b></h2>
+
+
+
+    <!-- Add this section to display error messages -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
+    <div class="table-title">
+        <h2>Manage <b>Events</b></h2>
+       
+            <a href="{{ route('events.create') }}" class="btn btn-success btn-green">
+                <i class="fas fa-plus icon"></i> <span>Add New Event</span>
+            </a>
+       
+    </div>
+    @endif
+    <div class="banner banner-blue">
+        <h2>Upcomming Events</h2>
+    </div>
+
+    <div class="cards-container">
+        @foreach ($events as $event)
+            <div class="card">
+                <!-- Add gym image to the card -->
+
+
+                <!-- Card details -->
+                <div class="card-title">{{ $event->title }}</div>
+                <div class="card-description">{{ $event->description }}</div>
+                <div class="card-dates">
+                    <div class="card-date-style">Type: {{ $event->type }}</div>
+                    <div class="card-date-style">Start date: {{ $event->start_date }}</div>
+                    <div class="card-date-style">End date: {{ $event->end_date }}</div>
+                    <div class="card-date-style">Created By: {{ $event->user->name }}</div>
                 </div>
-                <td> 
+
+                <!-- Card actions -->
                 @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-                <div class="col-sm-6">
-		            <a style="color:rgba(72, 113, 247);font-weight:bold; background-color: red;" href="{{ route('events.create') }}" class="btn btn-success btn-green" data-toggle="modal"><i class="fas fa-plus icon"></i><span>Add New Event</span></a>    
-             </div>
-             @endif
-          </div>
-    </div>
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>
-            <span class="custom-checkbox">
-                <input type="checkbox" id="selectAll">
-                <label for="selectAll"></label>
-              </span>
-          </th>
-          <th>Title</th>
-      <th>Description</th>
-      <th>Type</th>
-      <th>Start date</th>
-      <th>End date</th>
-      <th>Created By</th> <!-- New Column for User Name -->
-      <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      @foreach ($events as $event)
-        <tr>
-          <td>
-            <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox{{$event->id}}" name="options[]" value="{{$event->id}}">
-                <label for="checkbox{{$event->id}}"></label>
-              </span>
-          </td>
-          <td>{{ $event->title }}</td>
-        <td>{{ $event->description }}</td>
-        <td>{{ $event->type }}</td>
-        <td>{{ $event->start_date }}</td>
-        <td>{{ $event->end_date }}</td>
-        <td>{{ $event->user->name }}</td>
-          <td>   @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-                <a href="{{ route('events.edit', $event) }}" style="background: none; border: none; color: inherit;">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-
-            </td>
-            <td>
-
-                <form action="{{ route('events.destroy', $event) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="confirmDeletion(event)" class="btn btn-danger btn-red" style="background: none; border: none; color: inherit;">
-                       <i class="fas fa-trash-alt"></i> Delete
-                    </button>
-
-                </form>
+                    <div class="card-actions">
+                        <a href="{{ route('events.edit', $event) }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="confirmDeletion(event)" class="btn btn-danger btn-red">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </div>
                 @endif
-            </td>
-        </tr>
+            </div>
         @endforeach
-      </tbody>
-    </table>
     </div>
-</div>
+
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmDeletion(event) {
-    event.preventDefault();
-    const form = event.target.form; // Access the form
+        event.preventDefault();
+        const form = event.target.form; // Access the form
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33', // Dark red for the confirm button
-        cancelButtonColor: '#444', // Dark grey (or blackish) for the cancel button
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            form.submit();
-        }
-    });
-}
-
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Dark red for the confirm button
+            cancelButtonColor: '#444', // Dark grey (or blackish) for the cancel button
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    }
 </script>
-
-
 @endsection

@@ -116,6 +116,8 @@
                 <label for="price" id="ic">Price</label>
                 <input id="price" type="text" name="price" value="{{ $product->price }}" required class="input">
 
+                <label for="stock" id="ic">Stock</label>
+                <input id="stock" type="text" name="stock" value="{{ $product->stock }}" required class="input">
 
                 <label for="image" id="ic">Image URL</label>
                 <input type="text" id="image" name="image" value="{{ old('image', $product->image) }}" class="input">

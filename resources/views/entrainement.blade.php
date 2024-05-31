@@ -11939,14 +11939,14 @@ body.has-skin .owl-item {
               <div>L</div>
             </div>
           </div>
-
+          
         <div id="recommendationResult" style="display: none;">
             @if(isset($recommendations['recommendations']))
                 @if(is_string($recommendations['recommendations']))
                     <p>{{ $recommendations['recommendations'] }}</p>
                 @else
                     @foreach($recommendations['recommendations'] as $recommendation)
-                        <p>{{ $recommendation }}</p>
+                       
                     @endforeach
                 @endif
 

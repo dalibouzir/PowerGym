@@ -33,6 +33,9 @@ def load_dataset():
     return df
 
 dataset = load_dataset()
+def reload_dataset():
+    global dataset
+    dataset = load_dataset()
 
 exercise_to_muscle_map = {
     'Push-ups': ['Chest', 'Shoulders', 'Triceps'],
@@ -92,8 +95,13 @@ def find_closest_users(current_user_row, all_users, num_results=3):
     
     # Return the indices of the closest users
     return [sim[0] for sim in similarities[:num_results]]
+@app.route('/api/reload-data', methods=['POST'])
+def reload_data():
+    reload_dataset()
+    return jsonify({"success": True, "message": "Data reloaded successfully."}), 200
+
 def generate_recommendations(user_id):
-    user_data = dataset[dataset['id'] == user_id]
+    user_data = dataset[dataset['user_id'] == user_id]
     if user_data.empty:
         return "No recommendations available."  # If no user data, return a simple message
 
@@ -189,7 +197,8 @@ def api_get_user_info(user_id):
 
 @app.route('/api/recommendations/<int:user_id>', methods=['GET'])
 def get_recommendations(user_id):
-    user_data = dataset[dataset['id'] == user_id]
+    reload_dataset()
+    user_data = dataset[dataset['user_id'] == user_id]
     if user_data.empty:
         return jsonify({"success": False, "error": "User ID not found."}), 404
 

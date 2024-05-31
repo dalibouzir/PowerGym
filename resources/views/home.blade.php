@@ -1494,6 +1494,11 @@ body {
 .view-details-btn:hover {
   background-color: var(--primary); /* Return to primary color on hover */
 }
+.cart-icon {
+    font-size: 24px;
+    color: #fff;
+    margin-left: 10px; /* Adjust the margin as needed */
+}
 
 
        </style>
@@ -1508,9 +1513,13 @@ body {
           <div class="activities">
 
           <div class="user-info">
-        <img src="{{ Auth::user()->profile_image ?: 'https://w7.pngwing.com/pngs/981/645/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol-thumbnail.png' }}" alt="User Profile Image" class="user-profile-image">
-        <span id="user-name">Welcome {{ Auth::user()->name }}</span>
-    </div>
+    <img src="{{ Auth::user()->profile_image ?: 'https://w7.pngwing.com/pngs/981/645/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol-thumbnail.png' }}" alt="User Profile Image" class="user-profile-image">
+    <span id="user-name">Welcome {{ Auth::user()->name }}</span>
+    <a href="{{ route('cart.show') }}"><i class='bx bxs-cart-alt cart-icon'></i></a> <!-- Add the cart icon here -->
+</div>
+
+
+
 </br>
 <h1> Popular Categories</h1>
 </br>
@@ -1608,13 +1617,25 @@ body {
       <div class="best-item product-card" style="background-image: url('{{ $product->image }}');">
           <div class="overlay">
               <p class="product-name">{{ $product->name }}</p>
+               @if($product->stock > 0)
               <p class="product-description">{{ $product->description }}</p>
+             
               <div class="product-actions">
+              
                   <!-- Assign unique IDs based on the product's ID -->
-                  <a href="/productshow"  class="btn add-to-cart-btn" id="add-to-cart-{{ $product->id }}">Add to Cart</a>
-                  <a href="/products/{{ $product->id }}" class="btn view-details-btn" id="view-details-{{ $product->id }}">View Details</a>
+                  <form id="add-to-cart-form-{{ $product->id }}" action="{{ route('cart.add') }}" method="POST">
+            @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="button"  class="btn view-details-btn" onclick="confirmAddToCart({{ $product->id }})">Add to Cart</button>
+        </form>
+                  <a href="/products/{{ $product->id }}" class="btn view-details-btn" id="view-details-{{ $product->id }}">View</a>
               </div>
+              
               <div class="price-tag">${{ $product->price }}</div>
+              @else
+        <p class="btn view-details-btn" style="color: red;">Out of Stock</p>
+        @endif
           </div>
       </div>
       @endforeach
@@ -1694,7 +1715,8 @@ body {
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
 const navItems = document.querySelectorAll(".nav-item");
@@ -1707,6 +1729,57 @@ navItems.forEach((navItem) => {
     navItem.className = "nav-item active";
   });
 });
+function confirmAddToCart(productId) {
+        Swal.fire({
+            title: 'Add to Cart',
+            text: 'Are you sure you want to add this product to the cart?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                addToCart(productId);
+            }
+        });
+    }
+
+    function addToCart(productId) {
+        var formData = $('#add-to-cart-form-' + productId).serialize();
+        $.ajax({
+            url: $('#add-to-cart-form-' + productId).attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                Swal.fire({
+                    title: 'Added to Cart!',
+                    text: 'Product added to cart successfully.',
+                    icon: 'success'
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error adding product to cart:', error);
+            }
+        });
+    }
+    function updateProducts() {
+        // Serialize form data
+        var formData = $('#product-search-form').serialize();
+
+        // Send AJAX request to server
+        $.ajax({
+            url: $('#product-search-form').attr('action'),
+            method: 'GET',
+            data: formData,
+            success: function(response) {
+                $('#products-container').html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 
 // Clock function
 const clock = () => {

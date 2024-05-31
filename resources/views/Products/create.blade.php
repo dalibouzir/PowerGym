@@ -102,6 +102,12 @@
                 <span class="error">{{ $errors->first('price') }}</span>
             @endif
 
+            <label for="stock" id="ic">Stock</label>
+            <input type="text" id="stock" name="stock" value="{{ old('stock') }}" class="input">
+            @if ($errors->has('stock'))
+                <span class="error">{{ $errors->first('stock') }}</span>
+            @endif
+
             <label for="image" id="ic">Image URL</label>
             <input type="text" id="image" name="image" value="{{ old('image') }}" class="input">
             @if ($errors->has('image'))

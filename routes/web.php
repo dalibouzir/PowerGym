@@ -198,3 +198,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
 });
 Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+use App\Http\Controllers\CartController;
+
+Route::post('/purchase2/{id}', [ProductController::class, 'purchase2'])->name('purchase2');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    // Other cart-related routes if needed
+});
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
