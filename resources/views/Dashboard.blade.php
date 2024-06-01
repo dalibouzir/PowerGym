@@ -516,7 +516,7 @@
 
 
                     <li>
-                        <a href="/home" class="{{ request()->is('home') ? 'active' : '' }}">
+                        <a href="/home" class="{{ request()->is('home') || request()->is('cart') ? 'active' : '' }}">
                             <i class='bx bx-home'></i>
                             <span class="links_name">Home</span>
                         </a>

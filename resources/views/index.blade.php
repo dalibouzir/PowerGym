@@ -36,13 +36,14 @@
   </section>
 
 
-    <section id="features" class="animated-section">
+    <section id="features" class="animated-section" style="background-image: url('https://i.pinimg.com/originals/4f/42/ff/4f42ffa0e11543bea178d0c1cb312c90.jpg');">
     <div class="flex container">
       <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/feature-1.jpg" alt="Exercise Class" />
+        
         <div class="feature-info-container">
           <div class="icon">
-            <img src="https://onclickwebdesign.com/wp-content/uploads/icon-1.png" alt="Star Trophy Icon" />
+          <i class="fas fa-dumbbell"></i>
+
           </div>
           <h4>Amazing Setting</h4>
 <p>Our gym features state-of-the-art equipment, spacious workout areas, and a motivating atmosphere to help you achieve your fitness goals. Whether you're looking to build muscle, increase endurance, or just stay active, our facilities cater to all levels of fitness enthusiasts.</p>
@@ -51,10 +52,10 @@
       </div>
 
       <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/feature-2.jpg" alt="Man doing dumbbell rows" />
+        
         <div class="feature-info-container">
           <div class="icon">
-            <img src="https://onclickwebdesign.com/wp-content/uploads/icon-2.png" alt="Dumbbell Icon" />
+          <i class="fas fa-user"></i>
           </div>
           <h4>Best Trainers</h4>
 <p>Our certified trainers are passionate about your success and dedicated to guiding you on your fitness journey. With personalized training plans, nutritional advice, and continuous support, they ensure you're equipped to meet and surpass your fitness goals.</p>
@@ -63,10 +64,10 @@
       </div>
 
       <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/feature-3.jpg" alt="Woman doing leg press" />
+        
         <div class="feature-info-container">
           <div class="icon">
-            <img src="https://onclickwebdesign.com/wp-content/uploads/icon-3.png" alt="Smoothie Icon" />
+          <i class="fas fa-utensils"></i>
           </div>
           <h4>Diet Plans</h4>
 <p>Unlock your full potential with our tailored diet plans designed to fuel your fitness journey. Whether your goal is weight loss, muscle gain, or improved health, our expert nutritionists craft personalized meal strategies that complement your workout regime and dietary preferences.</p>
@@ -151,36 +152,39 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </section>
 
-  <section id="services" class="animated-section">
-    <h3>Services</h3>
-    <div class="flex container">
-      <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/services-icon-1.png" alt="Basketball Icon" />
-        <h4>Pilates</h4>
-        <p>Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.</p>
-      </div>
+<section id="services" class="animated-section" style="background-image: url('https://images.unsplash.com/photo-1597773150796-e5c14ebecbf5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMGJsdWV8ZW58MHx8MHx8fDA%3D'); background-repeat: no-repeat; background-size: cover;">
 
-      <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/services-icon-2.png" alt="Bench Press Icon" />
-        <h4>Free Lifting</h4>
-        <p>Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.</p>
-      </div>
-
-      <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/services-icon-3.png" alt="Stopwatch Icon" />
-        <h4>Yoga</h4>
-        <p>Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.</p>
-      </div>
-
-      <div class="box">
-        <img src="https://onclickwebdesign.com/wp-content/uploads/services-icon-4.png" alt="Mp3 Player Icon" />
-        <h4>Spinning</h4>
-        <p>Pellentesque dictum nisl in nibh dictum volutpat nec a quam. Vivamus suscipit nisl quis nulla pretium.</p>
-      </div>
+  <h3>Services</h3>
+  <div class="flex container">
+    <div class="box">
+      <img src="https://valetmag.com/gr/daily/health_fitness/fitness/why_men_should_do_pilates_022620/art-essential_pilates_exercises3.jpg" alt="Dumbbell Icon" />
+      <h4>Pilates</h4>
+      <p>State-of-the-art Pilates classes tailored to your fitness level. Strengthen your core, improve flexibility, and enhance overall well-being.</p>
     </div>
 
-    <a href="/registration" class="button">See All Services</a>
-  </section>
+    <div class="box">
+      <img src="https://assets.gqindia.com/photos/5cdc0e49d0e160243a100354/1:1/w_1080,h_1080,c_limit/weight-workout.jpg" alt="Weightlifting Icon" />
+      <h4>Free Lifting</h4>
+      <p>Unleash your strength with free lifting sessions. Build muscle, increase endurance, and achieve your fitness goals with expert guidance.</p>
+    </div>
+
+    <div class="box">
+      <img src="https://static.nike.com/a/images/f_auto/dpr_3.0,cs_srgb/h_484,c_limit/a4baaac3-01f0-4cf4-bad7-036a30f664bf/les-trois-meilleures-postures-de-yoga-pour-gagner-en-force-selon-les-experts.jpg" alt="Yoga Icon" />
+      <h4>Yoga</h4>
+      <p>Discover inner peace and balance with our yoga classes. Enhance flexibility, reduce stress, and foster holistic well-being.</p>
+    </div>
+
+    <div class="box">
+      <img src="https://hips.hearstapps.com/hmg-prod/images/shot-of-a-sporty-young-man-doing-plank-exercises-at-royalty-free-image-1702313402.jpg?crop=0.668xw:1.00xh;0.145xw,0&resize=640:*" alt="Spinning Icon" />
+      <h4>Spinning</h4>
+      <p>Elevate your cardio fitness with spinning sessions. Burn calories, improve cardiovascular health, and experience the thrill of indoor cycling.</p>
+    </div>
+  </div>
+
+  <a href="/registration" class="button">See All Services</a>
+</section>
+
+
 
   <section id="trainers" class="animated-section">
     <h5>The Best</h5>
@@ -235,37 +239,37 @@ document.addEventListener('DOMContentLoaded', function() {
         <h4>Upcoming Classes</h4>
         <table>
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Gym Fitness</td>
             <td>11:00 - 12:00</td>
           </tr>
 
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Pilates</td>
             <td>12:00 - 1:00</td>
           </tr>
 
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Spinning</td>
             <td>1:00 - 2:00</td>
           </tr>
 
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Yoga</td>
             <td>2:00 - 3:00</td>
           </tr>
 
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Zumba</td>
             <td>3:00 - 4:00</td>
           </tr>
 
           <tr>
-            <td><img src="https://onclickwebdesign.com/wp-content/uploads/stopwatch.png" alt="Stopwatch" /></td>
+            
             <td>Cardio Kickbox</td>
             <td>4:00 - 5:00</td>
           </tr>
@@ -308,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
   </div>
-  <section id="contact" class="animated-section">
+  <section id="contact" class="animated-section" style="background-image: url('https://wallpapers.com/images/hd/blue-and-red-background-1920-x-1080-4vewvjh3l7zxso7z.jpg');">
   <footer>
     <div class="footer-container">
       <div id="footer-logo" class="top-gym-logo">

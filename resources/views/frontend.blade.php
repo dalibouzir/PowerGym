@@ -40,6 +40,19 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-7N7wJ4zvVjdeFEXLXdqr4ECyPmCTN/UzmkL+nt1L5Kr+9c62a6veqTxPW/2PCkeEszY7n4Y0Bt4u1iyrjaUJFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Include Slick Carousel CSS -->
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-3IxMbLzgwFLDvIq/8B1uofO0LVZyuzfye9/5opsgVSs=" crossorigin="anonymous"></script>
+  
+  <!-- Include Slick Carousel JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+<!-- Include Slick Carousel CSS -->
+
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -281,6 +294,7 @@ header nav ul li a {
 
 /* start: features section styles */
 #features .box {
+  
   width: 31%;
 }
 
