@@ -14,6 +14,7 @@ class FlaskAPIController extends Controller
         // Require users to be authenticated for all actions in this controller
         $this->middleware('auth');
     }
+
     public function entrainementPage()
 {
     $user_id = Auth::id();
@@ -26,21 +27,32 @@ class FlaskAPIController extends Controller
 
     try {
         $recResponse = $client->request('GET', "recommendations/{$user_id}");
-        $recommendations = json_decode($recResponse->getBody()->getContents(), true);
+        $responseBody = $recResponse->getBody()->getContents();
+        
+        // Log the response body
+        Log::debug("Response from Flask API: " . $responseBody);
+
+        $recommendations = json_decode($responseBody, true);
+
+        // Log the decoded recommendations
+        Log::debug("Decoded recommendations: " . print_r($recommendations, true));
 
         // Check if recommendations were fetched successfully
-        if (isset($recommendations['success']) && $recommendations['success']) {
+        if (!empty($recommendations)) {
             // Pass recommendations to the view
             return view('entrainement', compact('recommendations'));
         } else {
             // Handle error response from API
-            return view('entrainement')->with('error', 'Failed to fetch recommendations.');
+            return view('entrainement')->with('error', 'No recommendations available.');
         }
     } catch (\Exception $e) {
         Log::error("Error fetching data for user ID {$user_id}: " . $e->getMessage());
         // Fallback if recommendations cannot be fetched
-        return view('entrainement')->with('error', 'Please try filling the recommendation forum');
+        return view('entrainement')->with('error', 'Please try filling the recommendation form');
     }
 }
 
 }
+
+
+

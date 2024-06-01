@@ -538,22 +538,19 @@
                     </li>
 
                     <li class="dropdown">
-                    <a href="/events" class="{{ request()->is('events', 'events/create','calendar', 'events/*/edit') ? 'active' : '' }}">
+                    <a href="/events" class="{{ request()->is('events', 'events/create', 'events/*/edit') ? 'active' : '' }}">
                         <i class='bx bx-bar-chart-alt-2'></i>
                         <span class="links_name">events</span>
                       </a>
                       <span class="tooltip">Events</span>
-                      <div class="dropdown-content">
-                        <a href="/events" class="{{ request()->is('events')  ? 'active' : '' }}">
-                          <i class='fas fa-running'></i><span class="links_name">Events</span>
-                        </a>
-                        <a href="/calendar" class="{{ request()->is('calendar') ? 'active' : '' }}">
+                    </li>
+                    
+                    <li>
+                    <a href="/calendar" class="{{ request()->is('calendar') ? 'active' : '' }}">
                         <i class='bx bx-calendar'></i><span class="links_name">Calendar</span>
                         </a>
-                        <!-- Add additional dropdown items here as needed -->
-                      </div>
+                        <span class="tooltip">Calendar</span>
                     </li>
-
 
                     
 

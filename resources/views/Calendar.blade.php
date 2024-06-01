@@ -6,28 +6,41 @@
 
 <div class="cal-modal-container">
   <div class="calendar-section">
+    <h2>Power Gym Calendar</h2>
+    <p>Stay updated with our latest events and activities. The calendar below showcases all our upcoming events.</p>
     <div id="calendar" class="transparent-calendar">
       <!-- Calendar will be rendered here -->
     </div>
   </div>
   <div class="events-section">
-    <h3>UPCOMING EVENTS</h3>
+    <h3>Upcoming Events</h3>
+    <p>Don't miss out on any of our exciting events. Check the list below for more details.</p>
     <div class="upcoming-events" style="height: 300px; overflow-y: scroll;">
-      @foreach($formattedEvents as $event)
-      @php
-        $isPast = \Carbon\Carbon::parse($event['start'])->isPast();
-      @endphp
-      <div class="upcoming-event {{ $isPast ? 'past-event' : '' }}">
-        <div class="event-date">{{ \Carbon\Carbon::parse($event['start'])->format('M d') }}</div>
-        <div class="event-title">{{ $event['title'] }}</div>
-      </div>
-      @endforeach
+    @foreach ($events as $event)
+    @php
+        $isPast = \Carbon\Carbon::parse($event->start_date)->isPast();
+    @endphp
+    <div class="upcoming-event {{ $isPast ? 'past-event' : '' }}">
+        <div class="event-details">
+            <div class="event-date">{{ \Carbon\Carbon::parse($event->start_date)->format('M d') }}</div>
+            <div class="event-title">{{ $event->title }}</div>
+        </div>
+        <div class="card-actions">
+            @if ($event->users->contains(Auth::id()))
+                <form action="{{ route('calendar.unjoin', $event) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Unjoin</button>
+                </form>
+            @endif
+        </div>
+    </div>
+@endforeach
+
+
     </div>
   </div>
-
 </div>
-
-
 
 {{-- Include FullCalendar's CSS and JS from CDN --}}
 <link href='https://unpkg.com/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
@@ -35,12 +48,49 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <style>
 body {
-  background-image: url('https://zynkdesign.com/wp-content/uploads/2019/10/fusion-lifestyle-gym.jpg');
-  box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 500;
+  background-color: #1e1e2f; /* Dark background color */
+  color: #ffffff; /* Default text color */
+}
+.upcoming-event {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 0, 0, 0.6); /* Red background for events */
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 5px solid #007bff; /* Blue border */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
+.upcoming-event:hover {
+    background-color: rgba(255, 0, 0, 0.8); /* Darker red on hover */
+}
+
+.event-details {
+    flex: 1;
+}
+
+.card-actions {
+    margin-left: 10px; /* Adjust as needed */
+}
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
 .cal-modal-container {
   display: flex;
   flex-direction: row; /* Ensures a horizontal layout */
@@ -48,23 +98,20 @@ body {
   justify-content: space-between; /* Adjusts spacing between items */
   gap: 20px; /* Provides space between flex items */
   padding: 20px;
+  height: calc(100vh - 80px); /* Adjust height to fill viewport minus some space for padding */
 }
 
 .calendar-section, .events-section {
-  background-color: rgba(192, 57, 43, 0.4);
+  background-color: rgba(52, 58, 64, 0.9); /* Dark background */
   color: #fff;
   border-radius: 15px;
   padding: 20px;
-  margin-bottom: 20px; /* Adjust as needed */
   overflow: auto;
-  height: auto; /* Adjust this value as needed */
-  max-height: 600px; /* Example max height */
+  height: 100%; /* Set height to 100% to fill the container */
 }
 
 .calendar-section {
   flex: 7; /* Takes up 70% of the space */
-  background-size: cover;
-  background-position: center;
 }
 
 .events-section {
@@ -73,90 +120,110 @@ body {
 
 #calendar {
   width: 100%;
+  height: 100%; /* Fill the height of the calendar section */
 }
 
-/* Style for headings, events, and descriptions unchanged */
-.events-section h3 {
+h2 {
+  font-size: 48px;
+  font-weight: 900;
+  color: #007bff; /* Blue color for headings */
+  text-shadow: 2px 2px #ff0000; /* Red shadow for headings */
+  margin-bottom: 20px;
+}
 
-font-size: 37px;
-font-weight: 900;
-margin: 0 0 1rem;
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #f8f9fa; /* Light gray color for paragraphs */
+  margin-bottom: 20px;
+}
+
+.events-section h3 {
+  font-size: 37px;
+  font-weight: 900;
+  color: #dc3545; /* Red color for event section heading */
+  margin: 0 0 1rem;
 }
 
 .upcoming-events {
-
-margin-top: 20px;
+  margin-top: 20px;
 }
 
 .upcoming-event {
-background-color: rgba(0, 0, 0, 0.6);
-color: #fff;
-padding: 10px;
-margin-bottom: 10px;
-border-left: 5px solid #ff0000;
-cursor: pointer;
+  background-color: rgba(255, 0, 0, 0.6); /* Red background for events */
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-left: 5px solid #007bff; /* Blue border */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .upcoming-event:hover {
-background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 0, 0, 0.8); /* Darker red on hover */
 }
 
 .event-date {
-font-weight: bold;
-font-size: 18px;
-color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  color: #00ff00; /* Green color for event dates */
 }
 
 .event-title {
-font-size: 18px;
-color: #fff;
+  font-size: 18px;
+  color: #ffffff; /* White color for event titles */
 }
 
 .event-description {
-font-size: 14px;
-color: #ccc;
+  font-size: 14px;
+  color: #cccccc; /* Light gray color for event descriptions */
 }
 
 /* Additional calendar styling */
 .fc-toolbar-title {
-    color: #fff; /* White color for the calendar title */
-  }
+  color: #00ff00; /* Green color for the calendar title */
+}
 
-  .fc-daygrid-day {
-    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent cells */
-    border-color: #fff; /* White borders for cells */
-    color: #fff; /* White color for cell numbers */
-  }
+.fc-daygrid-day {
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent cells */
+  border-color: #00ff00; /* Green borders for cells */
+  color: #ffffff; /* White color for cell numbers */
+}
 
-  .fc-daygrid-day.fc-day-today {
-    background-color: rgba(255, 0, 0, 0.5); /* More visible color for today */
-  }
-  .fc-event-title {
-    color: #fff; /* Ensure text is white for better visibility */
-  }
-
-  .fc-event {
-    background-color: #28a745; /* Green background for events */
-    border: none;
-  }
-
-  .fc-event .event-icon {
-    margin-right: 5px; /* Space between icon and text */
-  }
-.fc-day-today {
+.fc-daygrid-day.fc-day-today {
+  background-color: rgba(0, 123, 255, 0.5); /* Blue for today */
   position: relative;
 }
 
 .fc-day-today::after {
-  content: '';
+  content: 'Today';
   position: absolute;
-  bottom: 5px;
+  top: 5px;
   right: 5px;
-  height: 10px;
-  width: 10px;
-  background-color: blue;
-  border-radius: 50%;
-  display: block;
+  background-color: #ff0000; /* Red background for "Today" label */
+  color: #ffffff; /* White text for "Today" label */
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.fc-event-title {
+  color: #ffffff; /* Ensure text is white for better visibility */
+}
+
+.fc-event {
+  background-color: #dc3545; /* Red background for events */
+  border: none;
+}
+
+.fc-event .event-icon {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+.past-event {
+  text-decoration: line-through; /* Crosses out the event title */
+  opacity: 0.6; /* Optionally, make past events less prominent */
+  color: #888888; /* Gray color for past events */
 }
 
 /* Responsive adjustments */
@@ -170,14 +237,8 @@ color: #ccc;
     margin: 0 10px;
   }
 }
-.past-event {
-    text-decoration: line-through; /* Crosses out the event title */
-    opacity: 0.6; /* Optionally, make past events less prominent */
-}
 
 </style>
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -185,6 +246,19 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         events: @json($formattedEvents), // This works directly in a Blade template
+        eventContent: function(arg) {
+            let isPast = new Date(arg.event.start) < new Date();
+            let title = document.createElement('div');
+            title.classList.add('fc-event-title');
+            if(isPast) {
+                title.classList.add('past-event'); // Add this class for past events
+            }
+            title.innerHTML = arg.event.title;
+            let description = document.createElement('div');
+            description.classList.add('fc-event-description');
+            description.innerHTML = arg.event.extendedProps.description || '';
+            return { domNodes: [title, description] };
+        },
     });
     calendar.render();
 });
@@ -197,32 +271,29 @@ function isToday(date) {
     return date.getTime() === today.getTime();
 }
 
-
-
-// generate events
-var eventDates = {}
-let day1 = formatDate(new Date(new Date().setMonth(new Date().getMonth() + 1)))
+// Generate events
+var eventDates = {};
+let day1 = formatDate(new Date(new Date().setMonth(new Date().getMonth() + 1)));
 eventDates[day1] = [
   'Event 1, Location',
   'Event 2, Location 2'
-]
-let day2 = formatDate(new Date(new Date().setDate(new Date().getDate() + 40)))
+];
+let day2 = formatDate(new Date(new Date().setDate(new Date().getDate() + 40)));
 eventDates[day2] = [
   'Event 2, Location 3',
-]
+];
 
-// set maxDates
+// Set maxDates
 var maxDate = {
   1: new Date(new Date().setMonth(new Date().getMonth() + 11)),
   2: new Date(new Date().setMonth(new Date().getMonth() + 10)),
   3: new Date(new Date().setMonth(new Date().getMonth() + 9))
-}
+};
 
 var flatpickr = $('#calendar .placeholder').flatpickr({
   inline: true,
   minDate: 'today',
-  maxDate: maxDate[3]
-,
+  maxDate: maxDate[3],
   showMonths: 1,
   enable: Object.keys(eventDates),
   disableMobile: "true",
@@ -233,7 +304,7 @@ var flatpickr = $('#calendar .placeholder').flatpickr({
         contents += '<div class="event"><div class="date">' + flatpickr.formatDate(date[0], 'l J F') + '</div><div class="location">' + eventDates[str][i] + '</div></div>';
       }
     }
-    $('#calendar .calendar-events').html(contents)
+    $('#calendar .calendar-events').html(contents);
   },
   locale: {
     weekdays: {
@@ -249,30 +320,30 @@ var flatpickr = $('#calendar .placeholder').flatpickr({
       ]
     }
   }
-})
+});
 
-eventCaledarResize($(window));
+eventCalendarResize($(window));
 $(window).on('resize', function() {
-  eventCaledarResize($(this))
-})
+  eventCalendarResize($(this));
+});
 
-function eventCaledarResize($el) {
-  var width = $el.width()
+function eventCalendarResize($el) {
+  var width = $el.width();
   if(flatpickr.selectedDates.length) {
-    flatpickr.clear()
+    flatpickr.clear();
   }
   if(width >= 992 && flatpickr.config.showMonths !== 3) {
-    flatpickr.set('showMonths', 3)
-    flatpickr.set('maxDate', maxDate[3])
+    flatpickr.set('showMonths', 3);
+    flatpickr.set('maxDate', maxDate[3]);
   }
   if(width < 992 && width >= 768 && flatpickr.config.showMonths !== 2) {
-    flatpickr.set('showMonths', 2)
-    flatpickr.set('maxDate', maxDate[2])
+    flatpickr.set('showMonths', 2);
+    flatpickr.set('maxDate', maxDate[2]);
   }
   if(width < 768 && flatpickr.config.showMonths !== 1) {
-    flatpickr.set('showMonths', 1)
-    flatpickr.set('maxDate', maxDate[1])
-    $('.flatpickr-calendar').css('width', '')
+    flatpickr.set('showMonths', 1);
+    flatpickr.set('maxDate', maxDate[1]);
+    $('.flatpickr-calendar').css('width', '');
   }
 }
 
@@ -282,7 +353,6 @@ function formatDate(date) {
     let y = date.getFullYear();
     return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
@@ -302,7 +372,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     calendar.render();
 });
-
 
 </script>
 

@@ -1572,42 +1572,51 @@ body {
           <div class="weekly-schedule">
     <h1>Upcoming Events</h1>
     <div class="calendar">
-        @foreach($events->sortByDesc('start_date')->take(4) as $event)
-        @php
-            // Example logic to determine the background gradient based on the event type
-            $gradient = '';
-            switch ($event->type) {
-                case 'Swimming':
-                    $gradient = 'linear-gradient(240deg, rgb(124, 136, 224) 0%, #c3f4fc 100%)';
-                    break;
-                case 'Yoga':
-                    $gradient = 'linear-gradient(240deg, #e5a243ab 0%, #f7f7aa 90%)';
-                    break;
-                case 'Tennis':
-                    $gradient = 'linear-gradient(240deg, #97e7d1 0%, #ecfcc3 100%)';
-                    break;
-                case 'Hiking':
-                    $gradient = 'linear-gradient(240deg, #fc8ebe 0%, #fce5c3 100%)';
-                    break;
-                default:
-                    $gradient = 'linear-gradient(240deg, #888 0%, #aaa 100%)'; // Default gradient
-            }
-        @endphp
-        <div class="day-and-activity" style="background-image: {{ $gradient }};">
-            <div class="day">
-                <h1>{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</h1>
-                <p>{{ \Carbon\Carbon::parse($event->start_date)->format('D') }}</p>
-            </div>
-            <div class="activity">
-                <h2>{{ $event->title }}</h2>
-                <div class="participants">
-                    <p class="event-description">{{ $event->description }}</p>
-                </div>
-            </div>
-            <button class="btn">{{ $event->type }}</button>
+    @foreach($events->sortByDesc('start_date')->take(4) as $event)
+    @php
+        // Example logic to determine the background gradient based on the event type
+        $gradient = '';
+        switch ($event->type) {
+            case 'Swimming':
+                $gradient = 'linear-gradient(240deg, rgb(124, 136, 224) 0%, #c3f4fc 100%)';
+                break;
+            case 'Yoga':
+                $gradient = 'linear-gradient(240deg, #e5a243ab 0%, #f7f7aa 90%)';
+                break;
+            case 'Tennis':
+                $gradient = 'linear-gradient(240deg, #97e7d1 0%, #ecfcc3 100%)';
+                break;
+            case 'Hiking':
+                $gradient = 'linear-gradient(240deg, #fc8ebe 0%, #fce5c3 100%)';
+                break;
+            default:
+                $gradient = 'linear-gradient(240deg, #888 0%, #aaa 100%)'; // Default gradient
+        }
+    @endphp
+    <div class="day-and-activity" style="background-image: {{ $gradient }};">
+        <div class="day">
+            <h1>{{ \Carbon\Carbon::parse($event->start_date)->format('d') }}</h1>
+            <p>{{ \Carbon\Carbon::parse($event->start_date)->format('D') }}</p>
         </div>
-        @endforeach
+        <div class="activity">
+            <h2>{{ $event->title }}</h2>
+            <div class="participants">
+                <p class="event-description">{{ $event->description }}</p>
+            </div>
+        </div>
+        <form action="{{ route('calendar.join', $event) }}" method="POST">
+            @csrf
+            @if ($event->users->contains(Auth::id()))
+                <button type="button" class="btn" disabled>Joined</button>
+            @else
+                <button type="submit" class="btn">Join Event</button>
+            @endif
+        </form>
     </div>
+    @endforeach
+</div>
+
+
 </div>
 
 <div class="personal-bests featured-products">

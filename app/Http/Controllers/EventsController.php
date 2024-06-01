@@ -5,6 +5,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Models\Event;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
@@ -47,6 +48,19 @@ class EventsController extends Controller
     
         // Pass the fetched data to your view
         return view('home', compact('userBMI', 'recommendations', 'events', 'products'));
+    }
+    public function join(Request $request, Event $event)
+    {
+        $user = Auth::user();
+        if ($user) {
+            // Check if the user has already joined the event
+            if ($event->users()->where('user_id', $user->id)->exists()) {
+                return redirect()->route('home')->with('error', 'You have already joined this event.');
+            }
+            $event->users()->attach($user->id);
+            return redirect()->route('home')->with('success', 'You have successfully joined the event.');
+        }
+        return redirect()->route('login');
     }
     
 }

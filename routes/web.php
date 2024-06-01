@@ -140,6 +140,9 @@ Route::put('/events/{event}', [EventController::class, 'update'])->name('events.
 Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 Route::get('/eventshow', [EventController::class, 'eventshow'])->name('events.eventshow');
 Route::get('/searchE', [EventController::class, 'searchE'])->name('events.searchE');
+Route::post('/events/{event}/join', [EventController::class, 'join'])->name('events.join');
+Route::delete('/events/{event}/unjoin', [EventController::class, 'unjoin'])->name('events.unjoin');
+
 
 
 // // Routes for feedback
@@ -150,7 +153,15 @@ Route::get('/searchE', [EventController::class, 'searchE'])->name('events.search
 // Route::post('/recommendation', 'RecommendationsController@submitRecommendation')->name('recommendation.submit');
 // Route::get('/recommendation', [RecommendationsController::class, 'showForm'])->name('recommendation.form');
 Route::get('/home', [EventsController::class, 'index'])->name('home');
+Route::post('/calendar/{event}/join', [EventsController::class, 'join'])->name('calendar.join');
+
+
+
 Route::get('/calendar', [Event2Controller::class, 'index'])->name('calendar.index');
+
+Route::delete('/calendar/{event}', [Event2Controller::class, 'unjoin'])->name('calendar.unjoin');
+
+
 
 
 

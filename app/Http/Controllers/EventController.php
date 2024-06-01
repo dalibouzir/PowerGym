@@ -119,4 +119,31 @@ public function isAdmin() {
 
     return view('events.eventshow', ['events' => $events]);
 }
+public function join(Event $event)
+{
+    $user = Auth::user();
+    if ($user) {
+        if ($event->users()->where('user_id', $user->id)->exists()) {
+            return redirect()->route('events.index')->with('error', 'You have already joined this event.');
+        }
+        $event->users()->attach($user->id);
+        return redirect()->route('events.index')->with('success', 'You have successfully joined the event.');
+    }
+    return redirect()->route('login');
+}
+public function unjoin(Event $event)
+{
+    $user = Auth::user();
+    if ($user) {
+        // Check if the user has joined the event
+        if ($event->users()->where('user_id', $user->id)->exists()) {
+            $event->users()->detach($user->id);
+            return redirect()->route('events.index')->with('success', 'You have successfully unjoined the event.');
+        }
+        return redirect()->route('events.index')->with('error', 'You are not a participant of this event.');
+    }
+    return redirect()->route('login');
+}
+
+
 }

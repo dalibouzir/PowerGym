@@ -19,12 +19,16 @@ class Event extends Model // Adjust the class name to follow the naming conventi
     /**
      * Get the user that created the event.
      */
-    public function user()
-    {
-        // Assuming your User model is in the same namespace and your users table's primary key is 'id'
-        return $this->belongsTo(User::class);
-    }
+    public function users()
+{
+    return $this->belongsToMany(User::class);
+}
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+    
     // Uncomment or adjust your category relationship if needed
     /*
     public function category()

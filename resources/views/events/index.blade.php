@@ -196,80 +196,86 @@
 </style>
 
 
-
-    <!-- Add this section to display error messages -->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-    <div class="table-title">
-        <h2>Manage <b>Events</b></h2>
-       
-            <a href="{{ route('events.create') }}" class="btn btn-success btn-green">
-                <i class="fas fa-plus icon"></i> <span>Add New Event</span>
-            </a>
-       
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
-    @endif
-    <div class="banner banner-blue">
-        <h2>Upcomming Events</h2>
-    </div>
+@endif
+@if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
+<div class="table-title">
+    <h2>Manage <b>Events</b></h2>
+    <a href="{{ route('events.create') }}" class="btn btn-success btn-green">
+        <i class="fas fa-plus icon"></i> <span>Add New Event</span>
+    </a>
+</div>
+@endif
 
-    <div class="cards-container">
-        @foreach ($events as $event)
-            <div class="card">
-                <!-- Add gym image to the card -->
+<div class="banner banner-blue">
+    <h2>Upcoming Events</h2>
+</div>
 
+<div class="cards-container">
+    @foreach ($events as $event)
+        <div class="card">
+            <div class="card-title">{{ $event->title }}</div>
+            <div class="card-description">{{ $event->description }}</div>
+            <div class="card-dates">
+                <div class="card-date-style">Type: {{ $event->type }}</div>
+                <div class="card-date-style">Start date: {{ $event->start_date }}</div>
+                <div class="card-date-style">End date: {{ $event->end_date }}</div>
+            </div>
 
-                <!-- Card details -->
-                <div class="card-title">{{ $event->title }}</div>
-                <div class="card-description">{{ $event->description }}</div>
-                <div class="card-dates">
-                    <div class="card-date-style">Type: {{ $event->type }}</div>
-                    <div class="card-date-style">Start date: {{ $event->start_date }}</div>
-                    <div class="card-date-style">End date: {{ $event->end_date }}</div>
-                    <div class="card-date-style">Created By: {{ $event->user->name }}</div>
-                </div>
-
-                <!-- Card actions -->
+            <div class="card-actions">
                 @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-                    <div class="card-actions">
-                        <a href="{{ route('events.edit', $event) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="confirmDeletion(event)" class="btn btn-danger btn-red">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                        </form>
-                    </div>
+                    <a href="{{ route('events.edit', $event) }}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="confirmDeletion(event)" class="btn btn-danger btn-red">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </form>
+                @endif
+                @if ($event->users->contains(Auth::user()))
+                    <form action="{{ route('events.unjoin', $event) }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-sign-out-alt"></i> Unjoin
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('events.join', $event) }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-sign-in-alt"></i> Join
+                        </button>
+                    </form>
                 @endif
             </div>
-        @endforeach
-    </div>
-
+        </div>
+    @endforeach
+</div>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmDeletion(event) {
         event.preventDefault();
-        const form = event.target.form; // Access the form
+        const form = event.target.form;
 
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33', // Dark red for the confirm button
-            cancelButtonColor: '#444', // Dark grey (or blackish) for the cancel button
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#444',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
