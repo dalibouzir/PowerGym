@@ -7,9 +7,9 @@
     body {
         background-image: url("https://files.123freevectors.com/wp-content/original/128899-glowing-red-and-blue-wave-background.jpg");
         background-size: cover; /* Scale the background to be as large as possible */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Do not repeat the background */
-    background-attachment: fixed;
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Do not repeat the background */
+        background-attachment: fixed;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -38,7 +38,9 @@
         margin-bottom: 20px;
     }
 
-    input[type="text"], select, button {
+    input[type="text"],
+    select,
+    button {
         flex-grow: 1;
         padding: 8px;
         margin: 5px;
@@ -46,6 +48,7 @@
         border-radius: 4px;
         background: rgba(44, 44, 78, 0.85);
         color: #fff;
+        cursor: pointer; /* Add cursor style */
     }
 
     button[type="submit"] {
@@ -53,7 +56,6 @@
         color: white;
         border: none;
         border-radius: 4px;
-        cursor: pointer;
     }
 
     button[type="submit"]:hover {
@@ -65,7 +67,8 @@
         border-collapse: collapse;
     }
 
-    th, td {
+    th,
+    td {
         text-align: left;
         padding: 8px;
         border-bottom: 1px solid #ddd;
@@ -84,7 +87,6 @@
     .pagination {
         justify-content: center;
         padding: 20px 0;
-
     }
 
     .role-update-form {
@@ -92,12 +94,15 @@
         justify-content: start;
         align-items: center;
     }
+    .btn {
+        cursor: pointer; /* Add cursor style to all buttons */
+    }
 </style>
 <div class="container">
     <h1>Manage User Roles</h1>
-    <form action="{{ route('admin.users.index') }}" method="GET">
-        <input type="text" name="query" placeholder="Search by name or email" value="{{ request()->input('query', '') }}">
-        <button type="submit">Search</button>
+    <form id="search-form" action="{{ route('admin.users.index') }}" method="GET">
+        <input id="search-input" type="text" name="query" placeholder="Search by name or email" value="{{ request()->input('query', '') }}">
+        <button id="search-button" type="button">Search</button>
     </form>
 
     <table class="table">
@@ -107,7 +112,7 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Actions</th>
-                <th></th> <!-- New column for remove action -->
+                <th></th> <!-- New column for suspend action -->
             </tr>
         </thead>
         <tbody>
@@ -130,13 +135,32 @@
                             </form>
                         </td>
                         <td>
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Remove</button>
-                        </form>
-
+                            <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" id="unsuspend-form-{{ $user->id }}">
+                                @csrf
+                                <button type="button" class="btn btn-success unsuspend-btn" data-user-id="{{ $user->id }}">Unsuspend</button>
+                            </form>
                         </td>
+                        <td>
+    <div style="display: flex;">
+        @if ($user->is_suspended)
+            <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" id="unsuspend-form-{{ $user->id }}">
+                @csrf
+                <button type="button" class="btn btn-success unsuspend-btn" data-user-id="{{ $user->id }}">Unsuspend</button>
+            </form>
+        @else
+            <form action="{{ route('admin.users.suspend', $user) }}" method="POST" id="suspend-form-{{ $user->id }}">
+                @csrf
+                <button type="button" class="btn btn-danger suspend-btn" data-user-id="{{ $user->id }}">Suspend</button>
+            </form>
+        @endif
+        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" id="delete-form-{{ $user->id }}">
+            @csrf
+            @method('DELETE')
+            <button type="button" class="btn btn-danger delete-btn" data-user-id="{{ $user->id }}">Delete</button>
+        </form>
+    </div>
+</td>
+
                     </tr>
                 @endif
             @endforeach
@@ -145,37 +169,78 @@
     {{ $users->links() }}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteButtons = document.querySelectorAll('form button[type="submit"]');
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        const suspendButtons = document.querySelectorAll('.suspend-btn');
+        const unsuspendButtons = document.querySelectorAll('.unsuspend-btn');
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
+        const searchForm = document.getElementById('search-form');
 
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent form submission
-            const form = button.closest('form'); // Get the form
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#444',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Submit the form only if confirmed
-                }
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const userId = button.getAttribute('data-user-id');
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#444',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + userId).submit();
+                    }
+                });
             });
         });
+
+        suspendButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const userId = button.getAttribute('data-user-id');
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will suspend the user.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#444',
+                    confirmButtonText: 'Yes, suspend it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('suspend-form-' + userId).submit();
+                    }
+                });
+            });
+        });
+
+        unsuspendButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const userId = button.getAttribute('data-user-id');
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will unsuspend the user.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#444',
+                    confirmButtonText: 'Yes, unsuspend it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('unsuspend-form-' + userId).submit();
+                    }
+                });
+            });
+        });
+
+        searchButton.addEventListener('click', function() {
+            searchForm.submit();
+        });
     });
-});
-
-
-
-
 </script>
 @endsection

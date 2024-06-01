@@ -23,7 +23,31 @@ class UserManagementController extends Controller
 
         return view('role', compact('users'));
     }
+    public function suspend(User $user)
+    {
+        if (!auth()->user()->isAdmin1()) {
+            abort(403);
+        }
+    
+        // Update the user's data to mark them as suspended
+        $user->update(['is_suspended' => true]);
+    
+        return redirect()->route('admin.users.index')->with('success', 'User suspended successfully!');
+    }
+    
+    public function unsuspend(User $user)
+{
+    if (!auth()->user()->isAdmin1()) {
+        abort(403);
+    }
 
+    // Update the user's data to mark them as unsuspended
+    $user->unsuspend();
+
+    return redirect()->route('admin.users.index')->with('success', 'User unsuspended successfully!');
+}
+
+    
     public function destroy(User $user)
     {
         if (!auth()->user()->isAdmin1()) {

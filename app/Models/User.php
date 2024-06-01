@@ -12,12 +12,14 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = "users";
 
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'profile_image',
-        'role', // Add this line
+        'role',
+        'is_suspended', // Add is_suspended to fillable array
     ];
 
     protected $hidden = [
@@ -27,6 +29,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_suspended' => 'boolean', // Cast is_suspended to boolean
     ];
 
     public function isAdmin1()
@@ -46,7 +49,10 @@ class User extends Authenticatable
     }
 
 
-
+    public function unsuspend()
+    {
+        $this->update(['is_suspended' => false]);
+    }
     public function isTrainer() {
         return $this->role == 'trainers';
     }

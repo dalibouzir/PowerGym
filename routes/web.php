@@ -203,12 +203,17 @@ Route::get('/prosearchE', [ProductController::class, 'searchE'])->name('products
 
 use App\Http\Controllers\UserManagementController;
 
+Route::put('admin/users/{user}/suspend', [UserManagementController::class, 'suspend'])->name('admin.users.suspend');
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
+    
 });
+Route::post('/admin/users/{user}/suspend', [UserManagementController::class, 'suspend'])->name('admin.users.suspend');
+Route::post('/admin/users/{user}/unsuspend', [UserManagementController::class, 'unsuspend'])->name('admin.users.unsuspend');
 Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+
 use App\Http\Controllers\CartController;
 
 Route::post('/purchase2/{id}', [ProductController::class, 'purchase2'])->name('purchase2');

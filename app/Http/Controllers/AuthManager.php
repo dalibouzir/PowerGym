@@ -24,30 +24,41 @@ class AuthManager extends Controller
     }
 
     public function loginPost(Request $request)
-    {
-        $request->validate([
-            'email'=> 'required',
-            'password' => 'required'
-        ]);
+{
+    $request->validate([
+        'email' => 'required',
+        'password' => 'required'
+    ]);
 
-        $credentials = $request->only(['email', 'password']);
+    $credentials = $request->only(['email', 'password']);
 
-        // Show loader before attempting login
-        echo "<script>showLoader();</script>";
+    // Show loader before attempting login
+    echo "<script>showLoader();</script>";
 
-        if (Auth::attempt($credentials)) {
-            // Hide loader after successful login and redirect
-            echo "<script>hideLoader();</script>";
-            return redirect()->intended(route('home')); // Assuming 'home' is the route name for your dashboard
-        }
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
         
-        // Flash an error message to the session if authentication fails
-        // Hide loader after login attempt (whether successful or not)
+        if ($user->is_suspended) {
+            // Hide loader after login attempt and redirect back with error message
+            echo "<script>hideLoader();</script>";
+            return redirect()->back()->withErrors([
+                'email' => 'Your account has been suspended. Please contact the administrator.',
+            ]);
+        }
+
+        // Hide loader after successful login and redirect
         echo "<script>hideLoader();</script>";
-        return redirect()->back()->withInput($request->only('email'))->withErrors([
-            'email' => 'Login failed. Please check your username and password and try again.',
-        ]);
+        return redirect()->intended(route('home')); // Assuming 'home' is the route name for your dashboard
     }
+    
+    // Flash an error message to the session if authentication fails
+    // Hide loader after login attempt (whether successful or not)
+    echo "<script>hideLoader();</script>";
+    return redirect()->back()->withInput($request->only('email'))->withErrors([
+        'email' => 'Login failed. Please check your username and password and try again.',
+    ]);
+}
+
     
     public function registrationPost(Request $request)
     {
