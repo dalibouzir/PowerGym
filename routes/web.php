@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\MembershipController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedbackController;
@@ -226,3 +226,20 @@ Route::middleware(['auth'])->group(function () {
     // Other cart-related routes if needed
 });
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
+
+
+
+
+
+
+
+Route::get('/membership', function () {
+    return view('memberships.form');
+});
+
+Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
+
+Route::get('/admin/memberships', [MembershipController::class, 'index'])->name('admin.memberships');
+
+Route::post('/admin/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('admin.memberships.approve');

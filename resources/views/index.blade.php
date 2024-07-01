@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <h3>Services</h3>
   <div class="flex container">
     <div class="box">
-      <img src="https://valetmag.com/gr/daily/health_fitness/fitness/why_men_should_do_pilates_022620/art-essential_pilates_exercises3.jpg" alt="Dumbbell Icon" />
+      <img src="https://hips.hearstapps.com/hmg-prod/images/gettyimages-495506158-1528304491.jpg" alt="Dumbbell Icon" />
       <h4>Pilates</h4>
       <p>State-of-the-art Pilates classes tailored to your fitness level. Strengthen your core, improve flexibility, and enhance overall well-being.</p>
     </div>

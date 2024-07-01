@@ -102,7 +102,7 @@
     <h1>Manage User Roles</h1>
     <form id="search-form" action="{{ route('admin.users.index') }}" method="GET">
         <input id="search-input" type="text" name="query" placeholder="Search by name or email" value="{{ request()->input('query', '') }}">
-        <button id="search-button" type="button">Search</button>
+        <button id="search-button" type="submit">Search</button>
     </form>
 
     <table class="table">
@@ -135,32 +135,25 @@
                             </form>
                         </td>
                         <td>
-                            <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" id="unsuspend-form-{{ $user->id }}">
-                                @csrf
-                                <button type="button" class="btn btn-success unsuspend-btn" data-user-id="{{ $user->id }}">Unsuspend</button>
-                            </form>
+                            @if ($user->is_suspended)
+                                <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" id="unsuspend-form-{{ $user->id }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">Unsuspend</button>
+                                </form>
+                            @else
+                                <form action="{{ route('admin.users.suspend', $user) }}" method="POST" id="suspend-form-{{ $user->id }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Suspend</button>
+                                </form>
+                            @endif
                         </td>
                         <td>
-    <div style="display: flex;">
-        @if ($user->is_suspended)
-            <form action="{{ route('admin.users.unsuspend', $user) }}" method="POST" id="unsuspend-form-{{ $user->id }}">
-                @csrf
-                <button type="button" class="btn btn-success unsuspend-btn" data-user-id="{{ $user->id }}">Unsuspend</button>
-            </form>
-        @else
-            <form action="{{ route('admin.users.suspend', $user) }}" method="POST" id="suspend-form-{{ $user->id }}">
-                @csrf
-                <button type="button" class="btn btn-danger suspend-btn" data-user-id="{{ $user->id }}">Suspend</button>
-            </form>
-        @endif
-        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" id="delete-form-{{ $user->id }}">
-            @csrf
-            @method('DELETE')
-            <button type="button" class="btn btn-danger delete-btn" data-user-id="{{ $user->id }}">Delete</button>
-        </form>
-    </div>
-</td>
-
+                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" id="delete-form-{{ $user->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @endif
             @endforeach
@@ -168,6 +161,7 @@
     </table>
     {{ $users->links() }}
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
