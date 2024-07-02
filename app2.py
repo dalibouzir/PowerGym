@@ -25,6 +25,23 @@ custom_theme = {
     }
 }
 
+def apply_custom_theme(fig):
+    fig.update_layout(
+        template='plotly_white',
+        title_font_size=22,
+        title_x=0.5,
+        legend_title_font_color="black",
+        legend_title_font_size=14,
+        legend_x=1,
+        legend_y=1,
+        font=dict(family="Arial, sans-serif", size=12, color="black"),
+        paper_bgcolor='rgba(255,255,255,1)',
+        plot_bgcolor='rgba(255,255,255,1)',
+        xaxis={'color': 'black'},
+        yaxis={'color': 'black'}
+    )
+    return fig
+
 def get_db_connection():
     db_host = '127.0.0.1'
     db_user = 'root'
@@ -57,7 +74,8 @@ def home():
     LEFT JOIN Users u ON f.user_id = u.id 
     LEFT JOIN Recommendations r ON f.user_id = r.user_id
     """
-
+    membership_query = "SELECT membership_type, paid FROM memberships"
+    membership_df = pd.read_sql(membership_query, db_connection)
     try:
         if selected_date:
             query = base_query + " WHERE DATE(f.created_at) = %s"
@@ -76,25 +94,55 @@ def home():
     df['sex'].fillna('Unknown', inplace=True)
     df['user_tenure_at_feedback'] = (df['created_at'] - df['user_created_at']).dt.days
     df['created_at'] = pd.to_datetime(df['created_at'])
+    membership_type_counts = membership_df['membership_type'].value_counts()
+    membership_pie_fig = px.pie(names=membership_type_counts.index, values=membership_type_counts.values,
+                                title='Membership Type Distribution')
 
-    visualizations = []
+    paid_counts = membership_df['paid'].replace({1: 'Paid', 0: 'Pending'}).value_counts()
 
-    def apply_custom_theme(fig):
-        fig.update_layout(
-            template='plotly_white',
-            title_font_size=22,
-            title_x=0.5,
-            legend_title_font_color="black",
-            legend_title_font_size=14,
-            legend_x=1,
-            legend_y=1,
-            font=dict(family="Arial, sans-serif", size=12, color="black"),
-            paper_bgcolor='rgba(255,255,255,1)',
-            plot_bgcolor='rgba(255,255,255,1)',
-            xaxis={'color': 'black'},
-            yaxis={'color': 'black'}
+    # Create the bar chart
+    paid_vs_unpaid_bar_fig = px.bar(x=paid_counts.index, y=paid_counts.values, color=paid_counts.index,
+                                    title='Paid vs. Pending Memberships')
+
+    # Update x-axis labels and hover text
+    paid_vs_unpaid_bar_fig.update_traces(
+        hoverinfo='text',
+        hovertext=[f"Count: {count}" for count in paid_counts.values]
+    )
+
+    # Update the layout for better readability
+    paid_vs_unpaid_bar_fig.update_layout(
+        xaxis_title="Membership Status",  # Label for x-axis
+        yaxis_title="Number of Memberships",  # Label for y-axis
+        hovermode="x",
+        hoverlabel=dict(
+            bgcolor="white",
+            font_size=16,
+            font_family="Rockwell"
         )
-        return fig
+    )
+
+    # Show the counts on the left side of the bars
+    paid_vs_unpaid_bar_fig.update_layout(
+        annotations=[
+            dict(
+                x=pos,
+                y=val,
+                text=f"{val}",
+                xanchor="left",
+                yanchor="middle",
+                showarrow=False,
+                font=dict(
+                    size=12,
+                    color="black"
+                ),
+            )
+            for pos, val in enumerate(paid_counts.values)
+        ]
+    )
+    visualizations = []
+    visualizations.append({"figure": apply_custom_theme(membership_pie_fig), "description": "Pie chart showing distribution of membership types."})
+    visualizations.append({"figure": apply_custom_theme(paid_vs_unpaid_bar_fig), "description": "Bar chart showing paid vs. unpaid memberships."})
 
     if 'sentiment' in df.columns:
         sentiment_distribution_fig = px.pie(df, names='sentiment', title="Sentiment Distribution", color_discrete_sequence=px.colors.qualitative.Bold)
@@ -210,4 +258,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=True, port=334, host='0.0.0.0')
-

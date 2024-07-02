@@ -149,11 +149,12 @@
         </div>
 
         <button type="submit" class="btn-custom">Login</button>
-    </form>
-    <div class="footer-links">
-    <a href="{{ route('registration') }}">Sign Up</a> | <a href="{{ route('privacy-policy') }}">Privacy</a> | <a href="{{ route('terms-of-use') }}">Terms of Use</a>
+        <div class="footer-links">
+    <a href="{{ route('membership.store') }}">Fill form</a> | <a href="{{ route('privacy-policy') }}">Privacy</a> | <a href="{{ route('terms-of-use') }}">Terms of Use</a> | <a href="{{ route('password.request') }}">Forgot Password?</a>
+</div>
 
-    </div>
+    </form>
+   
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
 

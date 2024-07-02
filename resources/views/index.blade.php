@@ -11,7 +11,8 @@
         <div class="hero-slider-marketing">
           <a href="#" class="youtube-button"><span class="fa fa-play"></span></a>
           <h2>Get Strong. Power Gym.</h2>
-<a href="/registration" class="button">Explore</a>
+          <a href="{{ route('membership.store') }}">Explore</a>
+
 
         </div>
       </div>
@@ -20,7 +21,7 @@
         <div class="hero-slider-marketing">
           <a href="#" class="youtube-button"><span class="fa fa-play"></span></a>
           <h2>Fit Starts Here.</h2>
-          <a href="/registration" class="button">Join Us </a>
+          <a href="{{ route('membership.store') }}">Join Us</a>
         </div>
       </div>
 
@@ -28,7 +29,8 @@
         <div class="hero-slider-marketing">
           <a href="" class="youtube-button"><span class="fa fa-play"></span></a>
           <h2>Power Up!</h2>
-          <a href="/registration" class="button">See How</a>
+          <a href="{{ route('membership.store') }}">See How</a>
+
 
         </div>
       </div>
@@ -181,7 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <a href="/registration" class="button">See All Services</a>
+  <a href="{{ route('membership.store') }}">See all services </a>
+
 </section>
 
 
@@ -288,7 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <strong>BECOME A</strong>
         <h4>Personal Trainer</h4>
         <p>Become a Personal Trainer and turn your passion for fitness into a fulfilling career. Inspire and empower individuals to achieve their health goals. Transform lives through personalized training and expert guidance.</p>
-        <button><a href="/registration">SIGN UP</a></button>
+        <a href="{{ route('membership.store') }}">Fill form</a>
+
       </div>
     </div>
   </section>
@@ -332,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <div class="mailing-list">
         <input type="text" placeholder="YOUR EMAIL" />
-        <button><a href="/registration">SIGN UP</a></button>
+        <button><a href="{{route('membership.store')}}">Fill form and join us</a></button>
       </div>
 
 

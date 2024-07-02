@@ -505,7 +505,7 @@
                 @auth
                     @if (Auth::user()->isAdmin())
                         <li>
-                            <a href="{{ route('dashboard') }}" class="{{ request()->is('admin/users') || request()->is('visualizations') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}" class="{{ request()->is('admin/users') || request()->is('admin/memberships') || request()->is('visualizations') ? 'active' : '' }}">
                                 <i class='bx bx-tachometer'></i>
                                 <span class="links_name">Admin Dashboard</span>
                             </a>

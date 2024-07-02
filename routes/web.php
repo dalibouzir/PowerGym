@@ -236,10 +236,21 @@ Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout
 
 Route::get('/membership', function () {
     return view('memberships.form');
-});
+})->name('membership.form');
 
 Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
 
 Route::get('/admin/memberships', [MembershipController::class, 'index'])->name('admin.memberships');
 
 Route::post('/admin/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('admin.memberships.approve');
+
+Route::put('/memberships/{id}/update-payment', [MembershipController::class, 'updatePaymentStatus'])->name('membership.updatePayment');
+Route::get('/admin/memberships', [MembershipController::class, 'index'])->name('admin.memberships.index');
+
+
+
+
+Route::get('password/request', [AuthManager::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('password/request', [AuthManager::class, 'sendResetLink'])->name('password.email');
+Route::get('password/reset', [AuthManager::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [AuthManager::class, 'resetPassword'])->name('password.update');

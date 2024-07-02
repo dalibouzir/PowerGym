@@ -1,12 +1,9 @@
-
-
 @extends('dashboard')
 
 @section('title', 'Admin - Memberships')
 
 @section('content')
 <style>
-    <style>
     body {
         background-image: url("https://files.123freevectors.com/wp-content/original/128899-glowing-red-and-blue-wave-background.jpg");
         background-size: cover; /* Scale the background to be as large as possible */
@@ -30,44 +27,15 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
 
-    h1 {
+    h2 {
         text-align: center;
         color: rgba(72, 113, 247);
-    }
-
-    form {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    input[type="text"],
-    select,
-    button {
-        flex-grow: 1;
-        padding: 8px;
-        margin: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background: rgba(44, 44, 78, 0.85);
-        color: #fff;
-        cursor: pointer; /* Add cursor style */
-    }
-
-    button[type="submit"] {
-        background-color: #cc0000;
-        color: white;
-        border: none;
-        border-radius: 4px;
-    }
-
-    button[type="submit"]:hover {
-        background-color: #d63384;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 20px;
     }
 
     th,
@@ -87,34 +55,84 @@
         color: #E0E0E0;
     }
 
-    .pagination {
-        justify-content: center;
-        padding: 20px 0;
+    .btn-success {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
     }
 
-    .role-update-form {
-        display: flex;
-        justify-content: start;
-        align-items: center;
+    .btn-success:hover {
+        background-color: #45a049;
     }
-    .btn {
-        cursor: pointer; /* Add cursor style to all buttons */
+
+    /* Additional CSS for form elements */
+    .form-control {
+        border-radius: 4px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    .btn-primary {
+        border-radius: 4px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .row {
+        margin-bottom: 10px;
     }
 </style>
-    </style>
+
 <div class="container mt-5">
     <h2>Membership Submissions</h2>
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+
     @if(session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
+
+    <form action="{{ route('admin.memberships.index') }}" method="GET" class="mb-3">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" name="search" placeholder="Search..." class="form-control" value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="sort_by" class="form-control">
+                    <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Sort by Name</option>
+                    <option value="paid" {{ request('sort_by') == 'paid' ? 'selected' : '' }}>Sort by Paid Status</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="sort_order" class="form-control">
+                    <option value="asc" {{ request('sort_order', 'asc') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                </select>
+            </div>
+            <div class="col-md-12 mt-2">
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-striped">
+        <!-- Table header remains the same -->
         <thead>
             <tr>
                 <th>Name</th>
@@ -144,4 +162,5 @@
         </tbody>
     </table>
 </div>
+
 @endsection

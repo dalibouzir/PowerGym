@@ -19,7 +19,7 @@
             <li><a class="smooth-scroll-link" href="/productshow">Products</a></li>
             <li><a class="smooth-scroll-link" href="#contact">Contacts</a></li>
             <li>
-            <a href="registration"> Se connecter</a>
+            <a href="{{route('membership.store')}}"> Fill form and Join us</a>
             </li>
           </ul>
         </nav>

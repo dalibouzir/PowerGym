@@ -954,7 +954,7 @@ body {
      @if (Auth::user()->isAdmin1())
      <div class="admin-users-button">
         <a href="{{ route('admin.users.index') }}" class="btn btn-primary">Manage Users</a>
-        <a href="{{ route('admin.memberships') }}" class="btn btn-primary">Manage Memberships</a>
+        <a href="{{ route('admin.memberships.index') }}" class="btn btn-primary">Manage Memberships</a>
     </div>
     @endif
     <div class="date-picker-container">

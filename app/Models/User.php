@@ -17,6 +17,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
         'profile_image',
         'role',
         'is_suspended', // Add is_suspended to fillable array
