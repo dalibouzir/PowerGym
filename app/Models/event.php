@@ -1,39 +1,54 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
-class Event extends Model // Adjust the class name to follow the naming convention
+class Event extends Model
 {
     use HasFactory;
-    
-    // Assuming you've added a 'user_id' column to your events table
-    protected $fillable = ['title', 'description', 'type', 'start_date', 'end_date', 'user_id'];
-    protected $casts = [
-        'start_date' => 'datetime:Y-m-d',
-        'end_date' => 'datetime:Y-m-d',
-    ];
-    
-    /**
-     * Get the user that created the event.
-     */
-    public function users()
-{
-    return $this->belongsToMany(User::class);
-}
 
-    public function events()
+    protected $fillable = [
+        'title', 'description', 'type', 'start_date', 'end_date', 'user_id', 'coach_id', 'room_id'
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
+    public function room()
     {
-        return $this->belongsToMany(Event::class);
+        return $this->belongsTo(Room::class);
     }
-    
-    // Uncomment or adjust your category relationship if needed
-    /*
-    public function category()
+
+    public function coach()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Coach::class);
     }
-    */
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    // Add a method to check for conflicts
+    public static function hasConflict($startDate, $endDate, $coachId, $roomId, $eventId = null)
+    {
+        $query = self::where(function ($query) use ($startDate, $endDate) {
+            $query->whereBetween('start_date', [$startDate, $endDate])
+                  ->orWhereBetween('end_date', [$startDate, $endDate]);
+        })
+        ->where(function ($query) use ($coachId, $roomId) {
+            $query->where('coach_id', $coachId)
+                  ->orWhere('room_id', $roomId);
+        });
+
+        if ($eventId) {
+            $query->where('id', '!=', $eventId);
+        }
+
+        return $query->exists();
+    }
 }

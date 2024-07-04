@@ -1,9 +1,9 @@
 <?php
 use App\Http\Controllers\MembershipController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FlaskAPIController;
 use App\Http\Controllers\CategoryController;
@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Event2Controller;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ProductController;
-
-
+use App\Http\Controllers\CoachCalendarController;
+use App\Http\Controllers\CalendarController;
 // Home route
 Route::get('/', HomeController::class)->name('home');
 // Authentication Routes
@@ -142,7 +142,7 @@ Route::get('/eventshow', [EventController::class, 'eventshow'])->name('events.ev
 Route::get('/searchE', [EventController::class, 'searchE'])->name('events.searchE');
 Route::post('/events/{event}/join', [EventController::class, 'join'])->name('events.join');
 Route::delete('/events/{event}/unjoin', [EventController::class, 'unjoin'])->name('events.unjoin');
-
+Route::get('/joined-events', [Event2Controller::class, 'joinedEvents'])->name('events.joined');
 
 
 // // Routes for feedback
@@ -161,6 +161,8 @@ Route::get('/calendar', [Event2Controller::class, 'index'])->name('calendar.inde
 
 Route::delete('/calendar/{event}', [Event2Controller::class, 'unjoin'])->name('calendar.unjoin');
 
+
+Route::get('coach/{coachId}/calendar', [CoachCalendarController::class, 'show'])->name('coach.calendar');
 
 
 
@@ -254,3 +256,23 @@ Route::get('password/request', [AuthManager::class, 'showForgotPasswordForm'])->
 Route::post('password/request', [AuthManager::class, 'sendResetLink'])->name('password.email');
 Route::get('password/reset', [AuthManager::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [AuthManager::class, 'resetPassword'])->name('password.update');
+
+
+
+
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/schedule', [CalendarController::class, 'showSchedule'])->name('schedule');
+    Route::post('/schedule', [CalendarController::class, 'createSchedule'])->name('schedule.create');
+    Route::get('/schedule/{id}/edit', [CalendarController::class, 'editSchedule'])->name('schedule.edit');
+    Route::put('/schedule/{id}', [CalendarController::class, 'updateSchedule'])->name('schedule.update');
+    Route::delete('/schedule/{id}', [CalendarController::class, 'deleteSchedule'])->name('schedule.delete');
+    
+    // Corrected route for showing create schedule form
+    Route::get('/schedule/create', [CalendarController::class, 'showCreateForm'])->name('schedule.create_form');
+});
+
+
+Route::get('/schedule_table', [CalendarController::class, 'showScheduleTable'])->name('schedule.table');

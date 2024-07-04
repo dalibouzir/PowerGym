@@ -35,7 +35,7 @@
 
     .table-title {
         padding: 20px;
-        background: linear-gradient(45deg, #8B0000, #00008B); /* Dark red and dark blue gradient */
+        background: linear-gradient(45deg, #8B0000, #00008B);
         color: #fff;
         margin-bottom: 20px;
         border-radius: 10px;
@@ -54,10 +54,10 @@
     }
 
     .table-title .btn {
-        background-color: #8B0000; /* Dark red button */
+        background-color: #8B0000;
         color: #fff;
         font-size: 18px;
-        border: 2px solid #8B0000; /* Dark red border */
+        border: 2px solid #8B0000;
         border-radius: 50px;
         padding: 10px 20px;
         transition: all 0.3s ease;
@@ -65,8 +65,8 @@
     }
 
     .table-title .btn:hover {
-        background-color: #00008B; /* Dark blue on hover */
-        border-color: #00008B; /* Dark blue border on hover */
+        background-color: #00008B;
+        border-color: #00008B;
     }
 
     .intro-text {
@@ -87,9 +87,9 @@
     }
 
     .card {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(340, 0, 0, 0.5);
         padding: 20px;
-        width: calc(25% - 20px); /* Four cards per row */
+        width: calc(25% - 20px);
         margin: 10px 0;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -119,7 +119,7 @@
         font-size: 16px;
         margin-bottom: 10px;
         flex-grow: 1;
-        color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+        color: rgba(255, 255, 255, 0.8);
         font-family: 'Verdana', sans-serif;
         text-align: justify;
         line-height: 1.5;
@@ -132,7 +132,7 @@
     .card-dates {
         font-size: 14px;
         margin-bottom: 20px;
-        color: rgba(255, 255, 255, 0.6); /* Lighter semi-transparent white */
+        color: rgba(255, 255, 255, 0.6);
         font-family: 'Courier New', monospace;
         display: flex;
         flex-direction: column;
@@ -140,7 +140,7 @@
     }
 
     .card-date-style {
-        color: rgba(255, 255, 255, 0.6); /* Lighter semi-transparent white */
+        color: rgba(255, 255, 255, 0.6);
         display: inline-block;
     }
 
@@ -178,68 +178,53 @@
         padding: 0;
         list-style: none;
     }
-    .banner {
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        text-align: center;
-        color: #fff;
-        font-size: 24px;
+
+    .alert-danger li {
+        margin-bottom: 10px;
     }
-
-
-    .banner-blue {
-        background-color: #00008B; /* Dark blue */
-    }
-
-
 </style>
-
-
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+<div class="container">
+    <div class="table-title">
+        <h2>Events</h2>
+        @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
+        <a href="{{ route('events.create') }}" class="btn"><i class="fas fa-plus-circle"></i> Add New Event</a>
+        @endif
     </div>
-@endif
-@if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-<div class="table-title">
-    <h2>Manage <b>Events</b></h2>
-    <a href="{{ route('events.create') }}" class="btn btn-success btn-green">
-        <i class="fas fa-plus icon"></i> <span>Add New Event</span>
-    </a>
-</div>
-@endif
-
-<div class="banner banner-blue">
-    <h2>Upcoming Events</h2>
-</div>
-
-<div class="cards-container">
-    @foreach ($events as $event)
+    <div class="intro-text">
+        <p>Welcome to the Events Page! Here you can find all the upcoming events. Each event is crafted to provide an enriching experience for you. Feel free to explore and join any event that interests you!</p>
+    </div>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <div class="cards-container">
+    @foreach($events as $event)
+    @if (Auth::user()->isAdmin() || Auth::user()->isTrainer() || $event->end_date >= now())
         <div class="card">
             <div class="card-title">{{ $event->title }}</div>
             <div class="card-description">{{ $event->description }}</div>
             <div class="card-dates">
-                <div class="card-date-style">Type: {{ $event->type }}</div>
-                <div class="card-date-style">Start date: {{ $event->start_date }}</div>
-                <div class="card-date-style">End date: {{ $event->end_date }}</div>
+                <span class="card-date-style"><i class="fas fa-calendar-alt"></i> {{ $event->start_date }}</span>
+                <span class="card-date-style"><i class="fas fa-calendar-check"></i> {{ $event->end_date }}</span>
+                @if($event->coach)
+                    <span class="card-date-style"><i class="fas fa-user"></i> Coach: {{ $event->coach->name }}</span>
+                @endif
+                @if($event->room)
+                    <span class="card-date-style"><i class="fas fa-door-open"></i> Room: {{ $event->room->name }} (Capacity: {{ $event->room->capacity }})</span>
+                @endif
             </div>
-
             <div class="card-actions">
                 @if (Auth::user()->isAdmin() || Auth::user()->isTrainer())
-                    <a href="{{ route('events.edit', $event) }}" class="btn btn-primary">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
+                    <a href="{{ route('events.edit', $event->id) }}" class="btn"><i class="fas fa-edit"></i> Edit</a>
+                    <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="confirmDeletion(event)" class="btn btn-danger btn-red">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
+                        <button type="submit" class="btn"><i class="fas fa-trash-alt"></i> Delete</button>
                     </form>
                 @endif
                 @if ($event->users->contains(Auth::user()))
@@ -260,28 +245,10 @@
                 @endif
             </div>
         </div>
-    @endforeach
+    @endif
+@endforeach
+
+    </div>
 </div>
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmDeletion(event) {
-        event.preventDefault();
-        const form = event.target.form;
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#444',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-        });
-    }
-</script>
 @endsection

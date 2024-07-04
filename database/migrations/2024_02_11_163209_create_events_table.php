@@ -4,12 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateEventsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
@@ -19,18 +16,16 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // Add more columns as per your requirements
+            $table->unsignedBigInteger('coach_id'); // Keep coach_id as unsigned big integer
+            $table->unsignedBigInteger('room_id'); // Keep room_id as unsigned big integer
             $table->timestamps();
+
+            
         });
-      
     }
 
-    /**
-     * Reverse the migrations.
-     */
-
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('events');
     }
-};
+}

@@ -505,7 +505,7 @@
                 @auth
                     @if (Auth::user()->isAdmin())
                         <li>
-                            <a href="{{ route('dashboard') }}" class="{{ request()->is('admin/users') || request()->is('admin/memberships') || request()->is('visualizations') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}" class="{{ request()->is('admin/users') || request()->is('admin/memberships') ||request()->is('schedule')|| request()->is('schedule/create') ||request()->is('schedule/*/edit')|| request()->is('visualizations') ? 'active' : '' }}">
                                 <i class='bx bx-tachometer'></i>
                                 <span class="links_name">Admin Dashboard</span>
                             </a>
@@ -546,13 +546,13 @@
                     </li>
                     
                     <li>
-                    <a href="/calendar" class="{{ request()->is('calendar') ? 'active' : '' }}">
-                        <i class='bx bx-calendar'></i><span class="links_name">Calendar</span>
+                        <a href="{{ route('calendar.index') }}" class="{{ request()->is('calendar*', 'coach/*/calendar', 'joined-events') ? 'active' : '' }}">
+                            <i class='bx bx-calendar'></i>
+                            <span class="links_name">Calendar</span>
                         </a>
                         <span class="tooltip">Calendar</span>
                     </li>
 
-                    
 
                     <li>
                     <a href="/categories" class="{{ request()->is('categories', 'categories/create', 'categories/*/edit') ? 'active' : '' }}">

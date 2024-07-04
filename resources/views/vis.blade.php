@@ -955,6 +955,7 @@ body {
      <div class="admin-users-button">
         <a href="{{ route('admin.users.index') }}" class="btn btn-primary">Manage Users</a>
         <a href="{{ route('admin.memberships.index') }}" class="btn btn-primary">Manage Memberships</a>
+        <a href="{{ route('schedule') }}" class="btn btn-primary">Manage Schedule</a>
     </div>
     @endif
     <div class="date-picker-container">

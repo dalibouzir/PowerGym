@@ -11,32 +11,31 @@ class Event2Controller extends Controller
 {
     public function index()
     {
-        // Retrieve events for the calendar
-        $events = Event::select('id', 'title', 'description', 'type', 'start_date', 'end_date')
-                        ->get()
-                        ->map(function ($event) {
-                            // Format the dates for FullCalendar
-                            $event->start = Carbon::parse($event->start_date)->toIso8601String();
-                            $event->end = Carbon::parse($event->end_date)->toIso8601String();
-                            return $event;
-                        });
-
-        // Retrieve joined events for the current user
-        $joinedEvents = Auth::check() ? Auth::user()->events : null;
-
-        // Prepare events for the JavaScript calendar in the view
+        $today = now()->toDateString();
+    
+        // Retrieve events that are upcoming or on the current day
+        $events = Event::whereDate('end_date', '>=', $today)
+                       ->orderBy('start_date', 'asc')
+                       ->with('coach')
+                       ->get();
+    
+        // Format events for FullCalendar
         $formattedEvents = $events->map(function ($event) {
             return [
-                'id' => $event->id, // Include the 'id' attribute
+                'id' => $event->id,
                 'title' => $event->title,
-                'start' => $event->start,
-                'end' => $event->end,
-                // Additional fields here, if necessary
+                'start' => Carbon::parse($event->start_date)->toIso8601String(),
+                'end' => Carbon::parse($event->end_date)->toIso8601String(),
+                // Add more fields if needed
             ];
         });
-
-        return view('calendar', compact('events', 'formattedEvents', 'joinedEvents'));
+    
+        // Retrieve joined events for the current user (if authenticated)
+        $joinedEvents = Auth::check() ? Auth::user()->events : null;
+    
+        return view('calendar.calendar', compact('events', 'formattedEvents', 'joinedEvents'));
     }
+    
 
     public function unjoin(Request $request, Event $event)
     {
@@ -53,6 +52,13 @@ class Event2Controller extends Controller
     }
 
     // Other controller methods here...
+
+    public function joinedEvents()
+{
+    $joinedEvents = Auth::check() ? Auth::user()->events : collect([]);
+    return view('calendar.joined_events', compact('joinedEvents'));
+}
+
 
 
     

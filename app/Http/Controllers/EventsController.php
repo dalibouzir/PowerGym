@@ -20,7 +20,11 @@ class EventsController extends Controller
 
     public function index()
     {
-        $events = Event::all(); // Retrieve all events
+        $today = now()->toDateString();
+        $events = Event::whereDate('end_date', '>=', $today)
+                       ->orderBy('start_date', 'asc')
+                       ->with('coach')
+                       ->get();
         $products = Product::all();
         $userId = Auth::id(); // Dynamically get the logged-in user's ID
     
@@ -50,17 +54,27 @@ class EventsController extends Controller
         return view('home', compact('userBMI', 'recommendations', 'events', 'products'));
     }
     public function join(Request $request, Event $event)
-    {
-        $user = Auth::user();
-        if ($user) {
-            // Check if the user has already joined the event
-            if ($event->users()->where('user_id', $user->id)->exists()) {
-                return redirect()->route('home')->with('error', 'You have already joined this event.');
-            }
-            $event->users()->attach($user->id);
-            return redirect()->route('home')->with('success', 'You have successfully joined the event.');
+{
+    $user = Auth::user();
+    if ($user) {
+        // Check if the user has already joined the event
+        if ($event->users()->where('user_id', $user->id)->exists()) {
+            return redirect()->route('events.index')->with('error', 'You have already joined this event.');
         }
-        return redirect()->route('login');
+        
+        // Check if the room capacity is reached
+        $room = $event->room;
+        $currentParticipants = $event->users()->count();
+        if ($currentParticipants >= $room->capacity) {
+            return redirect()->route('events.index')->with('error', 'The room for this event is full.');
+        }
+        
+        $event->users()->attach($user->id);
+        return redirect()->route('events.index')->with('success', 'You have successfully joined the event.');
     }
+    return redirect()->route('login');
+}
+
+
     
 }

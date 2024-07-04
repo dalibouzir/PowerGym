@@ -17,6 +17,7 @@
               <a class="smooth-scroll-link" href="/">Power<br/>Gym</a>
             </li>
             <li><a class="smooth-scroll-link" href="/productshow">Products</a></li>
+            <li><a class="smooth-scroll-link" href="/schedule_table">schedule</a></li>
             <li><a class="smooth-scroll-link" href="#contact">Contacts</a></li>
             <li>
             <a href="{{route('membership.store')}}"> Fill form and Join us</a>

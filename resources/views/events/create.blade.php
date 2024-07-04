@@ -93,31 +93,62 @@
 </head>
 
 <body>
-    <form action="{{ route('events.store') }}" method="POST">
-        @csrf
-        <h1>Create | Events</h1>
-        <div class="case">
-            <h3>PowerGym EVENTS</h3>
-            <div class="grid">
-                <label id="ic"><span class="material-icons-outlined">title</span> Title</label>
-                <input type="text" id="title" name="title" required class="input">
-                <label id="ic"><span class="material-icons-outlined">description</span> Description</label>
-                <textarea id="description" name="description" required class="input"></textarea>
-                <label id="ic"><span class="material-icons-outlined">category</span> Type</label>
-                <select id="type" name="type" required class="input">
-                    @foreach($categories as $category)
+<form action="{{ route('events.store') }}" method="POST">
+    @csrf
+    <h1>Create | Events</h1>
+    <div class="case">
+        <h3>PowerGym EVENTS</h3>
+        <div class="grid">
+            <label id="ic"><span class="material-icons-outlined">title</span> Title</label>
+            <input type="text" id="title" name="title" required class="input">
+
+            <label id="ic"><span class="material-icons-outlined">description</span> Description</label>
+            <textarea id="description" name="description" required class="input"></textarea>
+
+            <label id="ic"><span class="material-icons-outlined">category</span> Type</label>
+            <select id="type" name="type" required class="input">
+                @foreach($categories as $category)
                     <option value="{{ $category->name }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <label id="ic"><span class="material-icons-outlined">event</span> Start Date</label>
-                <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}" required class="input">
-                <label id="ic"><span class="material-icons-outlined">event</span> End Date</label>
-                <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}" required class="input">
-            </div>
-    </br></br></br>
-            <button type="submit" class="btn-green">Create Event</button>
+                @endforeach
+            </select>
+
+            <label id="ic"><span class="material-icons-outlined">event</span> Start Date and Time</label>
+            <input type="datetime-local" id="start_date" name="start_date" value="{{ old('start_date') }}" required class="input">
+
+
+            <label id="ic"><span class="material-icons-outlined">event</span> End Date</label>
+            <input type="datetime-local" id="end_date" name="end_date" value="{{ old('end_date') }}" required class="input">
+
+            <label id="ic"><span class="material-icons-outlined">person</span> Coach</label>
+            <select id="coach_id" name="coach_id" required class="input">
+                @foreach($coaches as $coach)
+                    <option value="{{ $coach->id }}">{{ $coach->name }}</option>
+                @endforeach
+            </select>
+
+            <label id="ic"><span class="material-icons-outlined">meeting_room</span> Room</label>
+            <select id="room_id" name="room_id" required class="input">
+                @foreach($rooms as $room)
+                    <option value="{{ $room->id }}">{{ $room->name }}</option>
+                @endforeach
+            </select>
         </div>
-    </form>
+
+        <!-- Error messages display -->
+        @if ($errors->any())
+            <div style="background-color: #FF4136; color: white; padding: 10px; border-radius: 5px; margin-top: 20px;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <button type="submit" class="btn-green">Create Event</button>
+    </div>
+</form>
+
 </body>
 
 </html>
